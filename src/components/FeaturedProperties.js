@@ -17,7 +17,7 @@ import PropertyDetailsModal from './modals/PropertyDetailsModal';
 
 const PropertyCard = ({ property, onCardClick }) => {
     const {
-        image,
+        images,
         name,
         location,
         country,
@@ -47,7 +47,7 @@ const PropertyCard = ({ property, onCardClick }) => {
                 <CardMedia
                     component="img"
                     height="200"
-                    image={image}
+                    image={images[0]}
                     alt={name}
                 />
                 {/* Call for details flag */}
@@ -119,7 +119,7 @@ const FeaturedProperties = ({
 }) => {
     const [selectedProperty, setSelectedProperty] = useState(null);
     const [modalOpen, setModalOpen] = useState(false);
-    const displayProperties = properties.slice(0, 12);
+    const displayProperties = properties.slice(0, 20);
 
     const handleCardClick = (property) => {
         setSelectedProperty(property);

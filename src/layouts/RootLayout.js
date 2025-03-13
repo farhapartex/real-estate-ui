@@ -18,6 +18,7 @@ const RootLayout = ({ children }) => {
 
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <ResponsiveTopAppBar />
             <Box sx={{ overflow: 'hidden', position: 'relative' }}>
                 {children}

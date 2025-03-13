@@ -59,7 +59,7 @@ const PropertySearchForm = ({
             <Paper
                 elevation={3}
                 sx={{
-                    maxWidth: '75%',
+                    maxWidth: '80%',
                     margin: '0 auto',
                     padding: { xs: 3, md: 5 },
                     borderRadius: 2,
@@ -67,8 +67,8 @@ const PropertySearchForm = ({
             >
                 {/* Transaction Type Radio Group */}
                 <Box sx={{ mb: 4, textAlign: 'center' }}>
-                    <Typography variant="h6" gutterBottom>
-                        What would you like to do?
+                    <Typography variant="h4" gutterBottom>
+                        Find your #Ghor easily!
                     </Typography>
                     <RadioGroup
                         row

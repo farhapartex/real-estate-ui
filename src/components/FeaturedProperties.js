@@ -115,7 +115,7 @@ const FeaturedProperties = ({
     properties = []
 }) => {
     // Limit to 8 properties maximum
-    const displayProperties = properties.slice(0, 8);
+    const displayProperties = properties.slice(0, 12);
 
     return (
         <Box sx={{ py: 6, px: 2, maxWidth: '80%', margin: 'auto' }}>

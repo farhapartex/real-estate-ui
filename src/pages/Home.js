@@ -2,6 +2,7 @@ import React from "react";
 import RootLayout from "../layouts/RootLayout";
 import ImageTextOverlay from "../components/ImageOverlay";
 import FeaturedProperties from "../components/FeaturedProperties";
+import PropertySubmissionCta from "../components/PropertySubmissionCTA";
 
 const Home = () => {
     const featuredProperties = [
@@ -84,6 +85,26 @@ const Home = () => {
             bedrooms: 3,
             bathrooms: 2,
             size: 1600
+        },
+        {
+            id: 9,
+            image: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45',
+            name: 'Executive Apartment',
+            location: 'Sylhet',
+            country: 'Bangladesh',
+            bedrooms: 3,
+            bathrooms: 2,
+            size: 1600
+        },
+        {
+            id: 10,
+            image: 'https://images.unsplash.com/photo-1616046229478-9901c5536a45',
+            name: 'Executive Apartment',
+            location: 'Sylhet',
+            country: 'Bangladesh',
+            bedrooms: 3,
+            bathrooms: 2,
+            size: 1600
         }
     ];
     return (
@@ -100,6 +121,8 @@ const Home = () => {
                 title="Featured Properties"
                 properties={featuredProperties}
             />
+
+            <PropertySubmissionCta />
         </RootLayout>
     )
 }

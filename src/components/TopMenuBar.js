@@ -1,5 +1,8 @@
 import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import {
+    AppBar, useMediaQuery,
+    useTheme
+} from '@mui/material';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -13,10 +16,12 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Home', 'News & Insights', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 function ResponsiveTopAppBar() {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -36,25 +41,27 @@ function ResponsiveTopAppBar() {
     };
 
     return (
-        <AppBar position="static">
+        <AppBar position="static" sx={{
+            background: '#f8f8f8'
+        }}>
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <Typography
                         variant="h6"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: '#000',
                             textDecoration: 'none',
                         }}
                     >
-                        Ghor.Online
+                        Ghor
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -64,9 +71,9 @@ function ResponsiveTopAppBar() {
                             aria-controls="menu-appbar"
                             aria-haspopup="true"
                             onClick={handleOpenNavMenu}
-                            color="inherit"
+                            color="#000"
                         >
-                            <MenuIcon />
+                            <MenuIcon sx={{ color: '#000', }} />
                         </IconButton>
                         <Menu
                             id="menu-appbar"
@@ -82,11 +89,11 @@ function ResponsiveTopAppBar() {
                             }}
                             open={Boolean(anchorElNav)}
                             onClose={handleCloseNavMenu}
-                            sx={{ display: { xs: 'block', md: 'none' } }}
+                            sx={{ display: { xs: 'block', md: 'none' }, color: '#000', }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{page}</Typography>
+                                <MenuItem key={page} onClick={handleCloseNavMenu} sx={{ color: '#000', }}>
+                                    <Typography sx={{ textAlign: 'center', color: '#000', }}>{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -96,7 +103,7 @@ function ResponsiveTopAppBar() {
                         variant="h5"
                         noWrap
                         component="a"
-                        href="#app-bar-with-responsive-menu"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
@@ -104,18 +111,18 @@ function ResponsiveTopAppBar() {
                             fontFamily: 'monospace',
                             fontWeight: 700,
                             letterSpacing: '.3rem',
-                            color: 'inherit',
+                            color: '#000',
                             textDecoration: 'none',
                         }}
                     >
-                        Ghor.Online
+                        Ghor
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{ my: 2, color: 'white', display: 'block' }}
+                                sx={{ my: 2, color: '#000', display: 'block' }}
                             >
                                 {page}
                             </Button>
@@ -145,7 +152,7 @@ function ResponsiveTopAppBar() {
                         >
                             {settings.map((setting) => (
                                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                                    <Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
+                                    <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

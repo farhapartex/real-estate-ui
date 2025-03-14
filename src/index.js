@@ -20,6 +20,10 @@ import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
 import UserManagement from './pages/admin/UserManagement';
 import PropertyManagement from './pages/admin/PropertyManagement';
 import LocationManagement from './pages/admin/LocationManagement';
+import BlogManagement from './pages/admin/BlogManagementPage';
+import BlogDetails from './pages/admin/BlogDetails';
+import BlogCreate from './pages/admin/BlogCreate';
+import BlogEditPage from './pages/admin/BlogEdit';
 
 const root = document.getElementById("root");
 
@@ -43,6 +47,10 @@ ReactDOM.createRoot(root).render(
       <Route path="/admin/users" element={<UserManagement />} />
       <Route path="/admin/properties" element={<PropertyManagement />} />
       <Route path="/admin/locations" element={<LocationManagement />} />
+      <Route path="/admin/blogs" element={<BlogManagement />} />
+      <Route path="/admin/blogs/view/:id" element={<BlogDetails />} />
+      <Route path="/admin/blogs/edit/:id" element={<BlogEditPage />} />
+      <Route path="/admin/blogs/new" element={<BlogCreate />} />
     </Routes>
   </BrowserRouter>
 );

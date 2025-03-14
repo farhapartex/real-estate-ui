@@ -9,6 +9,8 @@ import PropertyDetailsPage from './pages/ProductDetails';
 import BlogListPage from './pages/BlogPage';
 import BlogDetailsPage from './pages/BlogDetailsPage';
 import PropertyListingPage from './pages/PropertyListPage';
+import LoginPage from './pages/auth/LoginPage';
+import SignupPage from './pages/auth/SignUp';
 
 const root = document.getElementById("root");
 
@@ -16,6 +18,8 @@ ReactDOM.createRoot(root).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
       <Route path="/property/:id" element={<PropertyDetailsPage />} />
       <Route path="/properties" element={<PropertyListingPage />} />
       <Route path="/blogs" element={<BlogListPage />} />

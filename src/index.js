@@ -18,6 +18,7 @@ import OwnerPropertiesPage from './pages/owner/OwnerPropertiesPage';
 import PropertyEditViewPage from './pages/owner/PropertyEditViewPage';
 import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
 import UserManagement from './pages/admin/UserManagement';
+import PropertyManagement from './pages/admin/PropertyManagement';
 
 const root = document.getElementById("root");
 
@@ -39,6 +40,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/admin" element={<AnalyticsDashboard />} />
       <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
       <Route path="/admin/users" element={<UserManagement />} />
+      <Route path="/admin/properties" element={<PropertyManagement />} />
     </Routes>
   </BrowserRouter>
 );

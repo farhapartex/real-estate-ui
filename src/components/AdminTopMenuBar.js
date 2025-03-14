@@ -17,10 +17,11 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router';
 
-const pages = ['Website', 'Dashboard', 'User Management', 'Blog'];
+const pages = ['Website', 'Dashboard', 'User Management', 'Property', 'Blog'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
 const pageLinks = {
     'Website': '/',
+    'Property': '/admin/properties',
     'Dashboard': '/admin/dashboard',
     'User Management': '/admin/users',
     'Blog': '/admin/blogs'

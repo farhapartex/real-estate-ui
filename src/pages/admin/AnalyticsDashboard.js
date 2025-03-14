@@ -54,7 +54,7 @@ import {
     Pie,
     Cell
 } from 'recharts';
-import RootLayout from '../../layouts/RootLayout';
+import AdminLayout from '../../layouts/AdminLayout';
 
 // Mock data - replace with actual API calls in production
 const userData = {
@@ -169,7 +169,7 @@ const AnalyticsDashboard = () => {
     };
 
     return (
-        <RootLayout>
+        <AdminLayout>
             <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                     <Typography variant="h4" component="h1" gutterBottom>
@@ -480,7 +480,7 @@ const AnalyticsDashboard = () => {
                     </Grid>
                 </Grid>
             </Container>
-        </RootLayout>
+        </AdminLayout>
     );
 };
 

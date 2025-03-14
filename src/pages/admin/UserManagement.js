@@ -14,7 +14,7 @@ import { Refresh as RefreshIcon } from '@mui/icons-material';
 import UserFilters from '../../components/admin/UserFilters';
 import UsersTable from '../../components/admin/UsersTable';
 import UserDetailsDialog from '../../components/admin/UserDetailsDialog';
-import RootLayout from '../../layouts/RootLayout';
+import AdminLayout from '../../layouts/AdminLayout';
 import { mockUsers } from "../../mockUsers";
 
 
@@ -22,7 +22,7 @@ const UserManagement = () => {
     const [users, setUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
@@ -191,7 +191,7 @@ const UserManagement = () => {
     };
 
     return (
-        <RootLayout>
+        <AdminLayout>
             <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
                     <Typography variant="h4" component="h1" gutterBottom>
@@ -261,7 +261,7 @@ const UserManagement = () => {
                     </Alert>
                 </Snackbar>
             </Container>
-        </RootLayout>
+        </AdminLayout>
     );
 };
 

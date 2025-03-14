@@ -36,6 +36,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
       <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
+      <Route path="/admin" element={<AnalyticsDashboard />} />
       <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
       <Route path="/admin/users" element={<UserManagement />} />
     </Routes>

@@ -15,6 +15,7 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { Link, useNavigate } from 'react-router';
 
 const pages = ['Home', 'News & Insights', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -24,11 +25,19 @@ const pageLinks = {
     'Blog': '/blogs'
 };
 
+const settingsPageLinks = {
+    'Profile': '/profile',
+    'Account': '/account',
+    'Dashboard': '/dashboard',
+    'Logout': '/logout',
+};
+
 function ResponsiveTopAppBar() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
+    const navigate = useNavigate();
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -43,6 +52,11 @@ function ResponsiveTopAppBar() {
 
     const handleCloseUserMenu = () => {
         setAnchorElUser(null);
+    };
+
+    const handleMenuItemClick = (path) => {
+        handleCloseUserMenu(); // Close the menu
+        navigate(path); // Navigate to the path
     };
 
     return (
@@ -157,7 +171,10 @@ function ResponsiveTopAppBar() {
                             onClose={handleCloseUserMenu}
                         >
                             {settings.map((setting) => (
-                                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                                <MenuItem
+                                    key={setting}
+                                    onClick={() => handleMenuItemClick(settingsPageLinks[setting])}
+                                >
                                     <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
                                 </MenuItem>
                             ))}

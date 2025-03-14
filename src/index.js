@@ -16,6 +16,7 @@ import TermsConditionsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicy';
 import OwnerPropertiesPage from './pages/owner/OwnerPropertiesPage';
 import PropertyEditViewPage from './pages/owner/PropertyEditViewPage';
+import AnalyticsDashboard from './pages/admin/AnalyticsDashboard';
 
 const root = document.getElementById("root");
 
@@ -34,6 +35,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
       <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
       <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
+      <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
     </Routes>
   </BrowserRouter>
 );

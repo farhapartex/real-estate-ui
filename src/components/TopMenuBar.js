@@ -28,7 +28,7 @@ const pageLinks = {
 const settingsPageLinks = {
     'Profile': '/profile',
     'Properties': '/owner/properties',
-    'Dashboard': '/dashboard',
+    'Dashboard': '/admin/dashboard',
     'Logout': '/logout',
 };
 

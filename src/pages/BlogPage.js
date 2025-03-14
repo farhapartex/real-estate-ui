@@ -85,7 +85,7 @@ const BlogListPage = () => {
                                         {/* Blog Title */}
                                         <Link
                                             component={RouterLink}
-                                            to={`/blog/${post.slug}`}
+                                            to={`/blogs/${post.slug}`}
                                             underline="none"
                                             color="inherit"
                                         >

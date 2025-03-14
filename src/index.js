@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home';
 import PropertyDetailsPage from './pages/ProductDetails';
 import BlogListPage from './pages/BlogPage';
+import BlogDetailsPage from './pages/BlogDetailsPage';
 
 const root = document.getElementById("root");
 
@@ -16,6 +17,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/" element={<Home />} />
       <Route path="/property/:id" element={<PropertyDetailsPage />} />
       <Route path="/blogs" element={<BlogListPage />} />
+      <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
     </Routes>
   </BrowserRouter>
 );

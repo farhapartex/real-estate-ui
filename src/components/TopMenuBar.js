@@ -18,6 +18,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 const pages = ['Home', 'News & Insights', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const pageLinks = {
+    'Home': '/',
+    'News & Insights': '/news',
+    'Blog': '/blogs'
+};
 
 function ResponsiveTopAppBar() {
     const theme = useTheme();
@@ -92,8 +97,8 @@ function ResponsiveTopAppBar() {
                             sx={{ display: { xs: 'block', md: 'none' }, color: '#000', }}
                         >
                             {pages.map((page) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu} sx={{ color: '#000', }}>
-                                    <Typography sx={{ textAlign: 'center', color: '#000', }}>{page}</Typography>
+                                <MenuItem key={page} onClick={handleCloseNavMenu} sx={{ color: '#000', }} href='/'>
+                                    <Typography sx={{ textAlign: 'center', color: '#000', }} href={pageLinks[page]}>{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>
@@ -123,6 +128,7 @@ function ResponsiveTopAppBar() {
                                 key={page}
                                 onClick={handleCloseNavMenu}
                                 sx={{ my: 2, color: '#000', display: 'block' }}
+                                href={pageLinks[page]}
                             >
                                 {page}
                             </Button>

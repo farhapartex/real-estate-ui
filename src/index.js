@@ -6,6 +6,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Home from './pages/Home';
 import PropertyDetailsPage from './pages/ProductDetails';
+import BlogListPage from './pages/BlogPage';
 
 const root = document.getElementById("root");
 
@@ -14,6 +15,7 @@ ReactDOM.createRoot(root).render(
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/property/:id" element={<PropertyDetailsPage />} />
+      <Route path="/blogs" element={<BlogListPage />} />
     </Routes>
   </BrowserRouter>
 );

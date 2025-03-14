@@ -111,7 +111,7 @@ const Home = () => {
     return (
         <RootLayout>
             <ImageTextOverlay
-                backgroundImage="https://plus.unsplash.com/premium_vector-1724080854640-d763ba44e974"
+                backgroundImage="https://images.unsplash.com/photo-1626222628055-fb92dd194160"
                 text="Welcome to Ghor"
                 imageOpacity={0.8}
                 height={600}

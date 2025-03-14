@@ -41,8 +41,9 @@ const ImageTextOverlay = ({
                     backgroundImage: `url(${backgroundImage})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
                     opacity: imageOpacity,
-                    zIndex: 0,
+                    zIndex: -1,
                 }}
             />
 

@@ -18,7 +18,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router';
 
 const pages = ['Home', 'News & Insights', 'Blog'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ['Profile', 'Properties', 'Dashboard', 'Logout'];
 const pageLinks = {
     'Home': '/',
     'News & Insights': '/news',
@@ -27,7 +27,7 @@ const pageLinks = {
 
 const settingsPageLinks = {
     'Profile': '/profile',
-    'Account': '/account',
+    'Properties': '/owner/properties',
     'Dashboard': '/dashboard',
     'Logout': '/logout',
 };

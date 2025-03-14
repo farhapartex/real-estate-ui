@@ -32,6 +32,8 @@ import { mockProperty, propertyTypes, countries, divisionsByCountry, districtsBy
 import RootLayout from '../../layouts/RootLayout';
 import PropertyBasicInfoTab from '../../components/owner/PropertyBasicInfoTab';
 import PropertyBasicInfoForm from '../../components/owner/PropertyBasicInfoTab';
+import PropertyFeaturesForm from '../../components/owner/PropertyFeaturesTab';
+import PropertyPhotosForm from '../../components/owner/PropertyPhotosForm';
 
 // These would typically be imported from separate files
 const PropertyBasicInfoTabUI = ({ property, isEditMode, handleChange }) => (
@@ -418,18 +420,23 @@ const PropertyEditViewPage = () => {
                     )}
 
                     {tabValue === 1 && (
-                        <PropertyFeaturesTab
+                        <PropertyFeaturesForm
                             property={property}
+                            featureInput={featureInput}
+                            setFeatureInput={setFeatureInput}
+                            handleAddFeature={handleAddFeature}
+                            handleRemoveFeature={handleRemoveFeature}
+                            handleAmenityChange={handleAmenityChange}
+                            handleParkingChange={handleParkingChange}
                             isEditMode={isEditMode}
-                            handleChange={handlePropertyChange}
                         />
                     )}
 
                     {tabValue === 2 && (
-                        <PropertyPhotosTab
+                        <PropertyPhotosForm
                             property={property}
-                            isEditMode={isEditMode}
-                            handleChange={handlePropertyChange}
+                            handleImageUpload={handleImageUpload}
+                            handleRemoveImage={handleRemoveImage}
                         />
                     )}
                 </Paper>

@@ -9,12 +9,7 @@ export const mockProperty = {
   Additional features include hardwood floors, recessed lighting, in-unit laundry, and a smart home system for climate control and security. The building offers a fitness center, rooftop pool, and 24-hour concierge service.
   
   Located in the heart of downtown, this property is within walking distance to restaurants, shopping, and public transportation.`,
-    images: [
-        'https://source.unsplash.com/random/800x600/?apartment,living',
-        'https://source.unsplash.com/random/800x600/?apartment,kitchen',
-        'https://source.unsplash.com/random/800x600/?apartment,bedroom',
-        'https://source.unsplash.com/random/800x600/?apartment,bathroom'
-    ],
+    images: ['https://plus.unsplash.com/premium_photo-1676321046449-5fc72b124490', 'https://plus.unsplash.com/premium_photo-1689609950112-d66095626efb', 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92', 'https://images.unsplash.com/photo-1505691723518-36a5ac3be353', 'https://images.unsplash.com/photo-1499916078039-922301b0eb9b'],
     price: 250000,
     purpose: 'sell',
     location: 'Downtown',

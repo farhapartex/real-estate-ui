@@ -12,6 +12,8 @@ import {
     FormControlLabel,
     Typography,
     Grid,
+    useMediaQuery,
+    useTheme
 } from '@mui/material';
 
 const PropertySearchForm = ({
@@ -20,6 +22,10 @@ const PropertySearchForm = ({
     districts = ['District 1', 'District 2', 'District 3'],
     propertyTypes = ['Apartment', 'House', 'Condo', 'Townhouse', 'Villa']
 }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
     // State for form values
     const [formValues, setFormValues] = useState({
         transactionType: 'rent',
@@ -48,26 +54,26 @@ const PropertySearchForm = ({
     return (
         <Box
             sx={{
-                width: '100vw',
+                width: '100%',
                 position: 'relative',
-                left: '50%',
-                transform: 'translateX(-50%)',
                 backgroundColor: '',
-                padding: { xs: '40px 16px', md: '60px 0', opacity: '0.899999999' },
+                padding: { xs: '20px 10px', md: '40px 0' },
+                opacity: '0.899999999',
             }}
         >
             <Paper
                 elevation={3}
                 sx={{
-                    maxWidth: '80%',
+                    width: { xs: '100%', sm: '100%', md: '80%' },
+                    maxWidth: { xs: '100%', sm: '100%', md: '80%' },
                     margin: '0 auto',
-                    padding: { xs: 3, md: 5 },
+                    padding: { xs: 2, sm: 3, md: 5 },
                     borderRadius: 2,
                 }}
             >
                 {/* Transaction Type Radio Group */}
                 <Box sx={{ mb: 4, textAlign: 'center' }}>
-                    <Typography variant="h4" gutterBottom>
+                    <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' } }}>
                         Find your #Ghor easily!
                     </Typography>
                     <RadioGroup
@@ -92,8 +98,8 @@ const PropertySearchForm = ({
 
                 {/* Form Fields */}
                 <form onSubmit={handleSubmit}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} sm={3}>
+                    <Grid container spacing={isMobile ? 2 : 3}>
+                        <Grid item xs={12} sm={6} md={3}>
                             <FormControl fullWidth required>
                                 <InputLabel>Country</InputLabel>
                                 <Select
@@ -111,7 +117,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} sm={6} md={3}>
                             <FormControl fullWidth required>
                                 <InputLabel>Division</InputLabel>
                                 <Select
@@ -129,7 +135,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} sm={6} md={3}>
                             <FormControl fullWidth required>
                                 <InputLabel>District</InputLabel>
                                 <Select
@@ -147,7 +153,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} sm={6} md={3}>
                             <FormControl fullWidth required>
                                 <InputLabel>Property Type</InputLabel>
                                 <Select
@@ -165,16 +171,16 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sx={{ textAlign: 'center', mt: 2 }}>
+                        <Grid item xs={12} sx={{ textAlign: 'center', mt: { xs: 1, sm: 2 } }}>
                             <Button
                                 variant="contained"
                                 color="primary"
-                                size="large"
+                                size={isMobile ? "medium" : "large"}
                                 type="submit"
                                 sx={{
-                                    minWidth: 200,
+                                    minWidth: { xs: 150, sm: 200 },
                                     borderRadius: 28,
-                                    py: 1.5
+                                    py: { xs: 1, sm: 1.5 }
                                 }}
                             >
                                 Search Properties

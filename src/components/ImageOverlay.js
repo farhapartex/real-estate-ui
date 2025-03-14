@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import PropertySearchForm from './search/PropertySearchForm';
 
 const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'France', 'Spain'];
@@ -15,14 +15,18 @@ const ImageTextOverlay = ({
     textColor = 'white',
     textVariant = 'h4'
 }) => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+    const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
     return (
         <Box
             sx={{
                 position: 'relative',
-                height: height,
+                height: { xs: 550, sm: 500, md: height },
                 width: '100%',
                 overflow: 'hidden',
-                borderRadius: 2,
+                borderRadius: { xs: 0, sm: 1, md: 2 },
                 boxShadow: 3,
             }}
         >
@@ -42,7 +46,7 @@ const ImageTextOverlay = ({
                 }}
             />
 
-            {/* Centered Text */}
+            {/* Centered Content */}
             <Box
                 sx={{
                     position: 'absolute',
@@ -54,19 +58,24 @@ const ImageTextOverlay = ({
                     alignItems: 'center',
                     justifyContent: 'center',
                     zIndex: 1,
-                    padding: 3,
+                    padding: { xs: 1, sm: 2, md: 3 },
                 }}
             >
-                {/* <Typography
-                    variant={textVariant}
-                    color={textColor}
-                    align="center"
-                    sx={{
-                        textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
-                    }}
-                >
-                    {text}
-                </Typography> */}
+                {text && (
+                    <Typography
+                        variant={textVariant}
+                        color={textColor}
+                        align="center"
+                        sx={{
+                            textShadow: '1px 1px 3px rgba(0, 0, 0, 0.7)',
+                            marginBottom: 2,
+                            display: 'none', // Hide text when form is shown
+                        }}
+                    >
+                        {text}
+                    </Typography>
+                )}
+
                 <PropertySearchForm
                     countries={countries}
                     divisions={divisions}

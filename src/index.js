@@ -14,6 +14,8 @@ import SignupPage from './pages/auth/SignUp';
 import ProfilePage from './pages/user/ProfilePage';
 import TermsConditionsPage from './pages/TermsPage';
 import PrivacyPolicyPage from './pages/PrivacyPolicy';
+import OwnerPropertiesPage from './pages/owner/OwnerPropertiesPage';
+import PropertyEditViewPage from './pages/owner/PropertyEditViewPage';
 
 const root = document.getElementById("root");
 
@@ -30,6 +32,8 @@ ReactDOM.createRoot(root).render(
       <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
       <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
+      <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
     </Routes>
   </BrowserRouter>
 );

@@ -12,6 +12,8 @@ import PropertyListingPage from './pages/PropertyListPage';
 import LoginPage from './pages/auth/LoginPage';
 import SignupPage from './pages/auth/SignUp';
 import ProfilePage from './pages/user/ProfilePage';
+import TermsConditionsPage from './pages/TermsPage';
+import PrivacyPolicyPage from './pages/PrivacyPolicy';
 
 const root = document.getElementById("root");
 
@@ -26,6 +28,8 @@ ReactDOM.createRoot(root).render(
       <Route path="/properties" element={<PropertyListingPage />} />
       <Route path="/blogs" element={<BlogListPage />} />
       <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
+      <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
+      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
     </Routes>
   </BrowserRouter>
 );

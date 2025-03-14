@@ -36,7 +36,7 @@ const Footer = ({ companyName = "Property Finder" }) => {
                         }}
                     >
                         <Link
-                            href="/terms"
+                            href="/terms-and-conditions"
                             color="text.secondary"
                             underline="hover"
                             sx={{ '&:hover': { color: 'primary.main' } }}
@@ -44,7 +44,7 @@ const Footer = ({ companyName = "Property Finder" }) => {
                             Terms & Conditions
                         </Link>
                         <Link
-                            href="/privacy"
+                            href="/privacy-policy"
                             color="text.secondary"
                             underline="hover"
                             sx={{ '&:hover': { color: 'primary.main' } }}

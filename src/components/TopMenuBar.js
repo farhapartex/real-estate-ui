@@ -32,12 +32,27 @@ const settingsPageLinks = {
     'Logout': '/logout',
 };
 
+const authLinks = {
+    'Login': '/login',
+    'Signup': '/signup'
+};
+
 function ResponsiveTopAppBar() {
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [anchorElNav, setAnchorElNav] = React.useState(null);
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
+
+    // Add state to track if user is logged in
+    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+
+    // You can replace this with your actual authentication check
+    React.useEffect(() => {
+        // Example: Check for token in localStorage or context
+        const token = localStorage.getItem('ghorAuthToken');
+        setIsLoggedIn(!!token);
+    }, []);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -115,6 +130,18 @@ function ResponsiveTopAppBar() {
                                     <Typography sx={{ textAlign: 'center', color: '#000', textDecoration: 'none' }} component={'a'} href={pageLinks[page]}>{page}</Typography>
                                 </MenuItem>
                             ))}
+
+                            {/* Add Login/Signup to mobile menu when not logged in */}
+                            {!isLoggedIn && (
+                                <>
+                                    <MenuItem onClick={() => navigate(authLinks['Login'])} sx={{ color: '#000' }}>
+                                        <Typography sx={{ textAlign: 'center', color: '#000', textDecoration: 'none' }}>Login</Typography>
+                                    </MenuItem>
+                                    <MenuItem onClick={() => navigate(authLinks['Signup'])} sx={{ color: '#000' }}>
+                                        <Typography sx={{ textAlign: 'center', color: '#000', textDecoration: 'none' }}>Signup</Typography>
+                                    </MenuItem>
+                                </>
+                            )}
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -148,37 +175,76 @@ function ResponsiveTopAppBar() {
                             </Button>
                         ))}
                     </Box>
+
+                    {/* Conditional rendering based on login status */}
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
-                            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            </IconButton>
-                        </Tooltip>
-                        <Menu
-                            sx={{ mt: '45px' }}
-                            id="menu-appbar"
-                            anchorEl={anchorElUser}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right',
-                            }}
-                            open={Boolean(anchorElUser)}
-                            onClose={handleCloseUserMenu}
-                        >
-                            {settings.map((setting) => (
-                                <MenuItem
-                                    key={setting}
-                                    onClick={() => handleMenuItemClick(settingsPageLinks[setting])}
+                        {isLoggedIn ? (
+                            <>
+                                <Tooltip title="Open settings">
+                                    <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                                        <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    sx={{ mt: '45px' }}
+                                    id="menu-appbar"
+                                    anchorEl={anchorElUser}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    keepMounted
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'right',
+                                    }}
+                                    open={Boolean(anchorElUser)}
+                                    onClose={handleCloseUserMenu}
                                 >
-                                    <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Menu>
+                                    {settings.map((setting) => (
+                                        <MenuItem
+                                            key={setting}
+                                            onClick={() => handleMenuItemClick(settingsPageLinks[setting])}
+                                        >
+                                            <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
+                                        </MenuItem>
+                                    ))}
+                                </Menu>
+                            </>
+                        ) : (
+                            // Show Login and Signup buttons when not logged in
+                            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                                <Button
+                                    onClick={() => navigate(authLinks['Login'])}
+                                    sx={{
+                                        my: 2,
+                                        mx: 1,
+                                        color: '#000',
+                                        display: 'block',
+                                        '&:hover': {
+                                            backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                                        }
+                                    }}
+                                >
+                                    Login
+                                </Button>
+                                <Button
+                                    onClick={() => navigate(authLinks['Signup'])}
+                                    sx={{
+                                        my: 2,
+                                        mx: 1,
+                                        color: '#fff',
+                                        backgroundColor: '#1976d2',
+                                        display: 'block',
+                                        '&:hover': {
+                                            backgroundColor: '#1565c0'
+                                        }
+                                    }}
+                                >
+                                    Signup
+                                </Button>
+                            </Box>
+                        )}
                     </Box>
                 </Toolbar>
             </Container>

@@ -112,7 +112,7 @@ function ResponsiveTopAppBar() {
                         >
                             {pages.map((page) => (
                                 <MenuItem key={page} onClick={handleCloseNavMenu} sx={{ color: '#000', }} href='/'>
-                                    <Typography sx={{ textAlign: 'center', color: '#000', }} href={pageLinks[page]}>{page}</Typography>
+                                    <Typography sx={{ textAlign: 'center', color: '#000', textDecoration: 'none' }} component={'a'} href={pageLinks[page]}>{page}</Typography>
                                 </MenuItem>
                             ))}
                         </Menu>

@@ -23,9 +23,10 @@ const ImageTextOverlay = ({
         <Box
             sx={{
                 position: 'relative',
-                height: { xs: 550, sm: 500, md: height },
+                minHeight: { xs: 'auto', sm: 'auto', md: height },
+                height: { xs: 'auto', sm: 'auto', md: height },
                 width: '100%',
-                overflow: 'hidden',
+                overflow: 'visible',
                 borderRadius: { xs: 0, sm: 1, md: 2 },
                 boxShadow: 3,
             }}
@@ -50,7 +51,7 @@ const ImageTextOverlay = ({
             {/* Centered Content */}
             <Box
                 sx={{
-                    position: 'absolute',
+                    position: 'relative',
                     top: 0,
                     left: 0,
                     width: '100%',

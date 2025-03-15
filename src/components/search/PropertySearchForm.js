@@ -150,7 +150,7 @@ const PropertySearchForm = ({
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={isMobile ? 2 : 3}>
                         {/* First row - Location and property type */}
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>Country</InputLabel>
                                 <Select
@@ -171,7 +171,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>Division</InputLabel>
                                 <Select
@@ -192,7 +192,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>District</InputLabel>
                                 <Select
@@ -213,7 +213,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>Property Type</InputLabel>
                                 <Select
@@ -235,7 +235,7 @@ const PropertySearchForm = ({
                         </Grid>
 
                         {/* Second row - Price range and bedrooms/bathrooms */}
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <TextField
                                 fullWidth
                                 label="Min Price"
@@ -249,7 +249,7 @@ const PropertySearchForm = ({
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <TextField
                                 fullWidth
                                 label="Max Price"
@@ -263,7 +263,7 @@ const PropertySearchForm = ({
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>Bedrooms</InputLabel>
                                 <Select
@@ -284,7 +284,7 @@ const PropertySearchForm = ({
                             </FormControl>
                         </Grid>
 
-                        <Grid item xs={12} sm={6} md={3}>
+                        <Grid item xs={12} sm={6} md={4} lg={3}>
                             <FormControl fullWidth>
                                 <InputLabel>Bathrooms</InputLabel>
                                 <Select

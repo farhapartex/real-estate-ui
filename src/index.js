@@ -40,6 +40,7 @@ ReactDOM.createRoot(root).render(
       <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
       <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
       <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+      <Route path="/owner/dashboard" element={<OwnerPropertiesPage />} />
       <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
       <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
       <Route path="/admin" element={<AnalyticsDashboard />} />

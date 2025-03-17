@@ -38,6 +38,20 @@ ReactDOM.createRoot(root).render(
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+
+        <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']} />}>
+          {/* <Route path="/admin" element={<AnalyticsDashboard />} /> */}
+          <Route path="dashboard" element={<AnalyticsDashboard />} />
+          <Route path="users" element={<UserManagement />} />
+          <Route path="properties" element={<PropertyManagement />} />
+          <Route path="locations" element={<LocationManagement />} />
+          <Route path="blogs" element={<BlogManagement />} />
+          <Route path="blogs/view/:id" element={<BlogDetails />} />
+          <Route path="blogs/edit/:id" element={<BlogEditPage />} />
+          <Route path="blogs/new" element={<BlogCreate />} />
+        </Route>
+
+
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/property/:id" element={<PropertyDetailsPage />} />
@@ -48,7 +62,9 @@ ReactDOM.createRoot(root).render(
           <Route path="/owner/dashboard" element={<OwnerPropertiesPage />} />
           <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
           <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
-          <Route path="/admin" element={<AnalyticsDashboard />} />
+
+
+          {/* <Route path="/admin" element={<AnalyticsDashboard />} />
           <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/properties" element={<PropertyManagement />} />
@@ -56,7 +72,7 @@ ReactDOM.createRoot(root).render(
           <Route path="/admin/blogs" element={<BlogManagement />} />
           <Route path="/admin/blogs/view/:id" element={<BlogDetails />} />
           <Route path="/admin/blogs/edit/:id" element={<BlogEditPage />} />
-          <Route path="/admin/blogs/new" element={<BlogCreate />} />
+          <Route path="/admin/blogs/new" element={<BlogCreate />} /> */}
         </Route>
 
         {/* <Route path="*" element={<Navigate replace to="/dashboard" />} /> */}

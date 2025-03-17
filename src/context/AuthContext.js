@@ -11,6 +11,13 @@ export const AuthProvider = ({ children }) => {
 
     const navigate = useNavigate();
 
+    const logout = async () => {
+        await authService.logout();
+        setUser(null);
+        setIsAuthenticated(false);
+        navigate("/login");
+    }
+
 
     useEffect(() => {
         const checkAuthStatus = async () => {
@@ -44,9 +51,13 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(!!user);
     }, [user]);
 
+    const hasRole = (requiredRole) => {
+        return user && user.role === requiredRole;
+    };
+
 
     return (
-        <AuthContext.Provider value={{ user, setUser, isAuthenticated, loading }}>
+        <AuthContext.Provider value={{ user, setUser, isAuthenticated, loading, logout, hasRole }}>
             {children}
         </AuthContext.Provider>
     )

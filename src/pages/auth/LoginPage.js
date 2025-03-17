@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link as RouterLink } from 'react-router';
 import { useNavigate } from 'react-router';
 import {
@@ -19,6 +19,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import { authService } from '../../api/authService';
+import { AuthContext } from '../../context/AuthContext';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -32,6 +33,7 @@ const LoginPage = () => {
     const [apiError, setApiError] = useState('');
 
     const navigate = useNavigate();
+    const { setUser } = useContext(AuthContext);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -85,7 +87,9 @@ const LoginPage = () => {
                 const { email, password } = formData;
                 const result = await authService.login(email, password);
                 if (result.success) {
-                    navigate("/admin/dashboard");
+                    setUser(result.user);
+                    const homeRoute = authService.getHomeRoute(result.user);
+                    navigate(homeRoute);
                 }
             } catch (error) {
                 setApiError('Error occured.')

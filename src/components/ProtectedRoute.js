@@ -2,9 +2,10 @@ import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { Box, CircularProgress } from "@mui/material";
 import { useNavigate, Outlet } from "react-router";
+import { authService } from "../api/authService";
 
-const ProtectedRoute = () => {
-    const { isAuthenticated, loading } = useAuth();
+const ProtectedRoute = ({ allowedRoles = [] }) => {
+    const { user, isAuthenticated, loading } = useAuth();
     let navigate = useNavigate();
 
     if (loading) {
@@ -22,8 +23,12 @@ const ProtectedRoute = () => {
         );
     }
 
+    if (allowedRoles.length === 0 || user && allowedRoles.includes(user.role)) {
+        return <Outlet />;
+    }
 
-    return isAuthenticated ? <Outlet /> : navigate("/login")
+
+    return navigate(authService.getHomeRoute(user));
 }
 
 

@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 
 const pages = ['Home', 'News & Insights', 'Blog'];
 const settings = ['Profile', 'Properties', 'Dashboard', 'Logout'];
@@ -44,15 +45,8 @@ function ResponsiveTopAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
 
-    // Add state to track if user is logged in
-    const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+    const { user, isAuthenticated, loading, logout, hasRole } = useAuth();
 
-    // You can replace this with your actual authentication check
-    React.useEffect(() => {
-        // Example: Check for token in localStorage or context
-        const token = localStorage.getItem('ghorAuthToken');
-        setIsLoggedIn(!!token);
-    }, []);
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -69,9 +63,14 @@ function ResponsiveTopAppBar() {
         setAnchorElUser(null);
     };
 
-    const handleMenuItemClick = (path) => {
-        handleCloseUserMenu(); // Close the menu
-        navigate(path); // Navigate to the path
+    const handleMenuItemClick = (setting) => {
+        handleCloseUserMenu();
+        if (setting === 'Logout') {
+            // Call the logout function from auth context
+            logout();
+        } else {
+            navigate(settingsPageLinks[setting])
+        }
     };
 
     return (
@@ -132,7 +131,7 @@ function ResponsiveTopAppBar() {
                             ))}
 
                             {/* Add Login/Signup to mobile menu when not logged in */}
-                            {!isLoggedIn && (
+                            {!isAuthenticated && (
                                 <>
                                     <MenuItem onClick={() => navigate(authLinks['Login'])} sx={{ color: '#000' }}>
                                         <Typography sx={{ textAlign: 'center', color: '#000', textDecoration: 'none' }}>Login</Typography>
@@ -178,7 +177,7 @@ function ResponsiveTopAppBar() {
 
                     {/* Conditional rendering based on login status */}
                     <Box sx={{ flexGrow: 0 }}>
-                        {isLoggedIn ? (
+                        {isAuthenticated ? (
                             <>
                                 <Tooltip title="Open settings">
                                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -204,7 +203,7 @@ function ResponsiveTopAppBar() {
                                     {settings.map((setting) => (
                                         <MenuItem
                                             key={setting}
-                                            onClick={() => handleMenuItemClick(settingsPageLinks[setting])}
+                                            onClick={() => handleMenuItemClick(setting)}
                                         >
                                             <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
                                         </MenuItem>

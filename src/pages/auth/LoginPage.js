@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router';
+import { useNavigate } from 'react-router';
 import {
     Box,
     TextField,
@@ -17,6 +18,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
+import { authService } from '../../api/authService';
 
 const LoginPage = () => {
     const [formData, setFormData] = useState({
@@ -26,6 +28,10 @@ const LoginPage = () => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
+    const [apiError, setApiError] = useState('');
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -40,6 +46,10 @@ const LoginPage = () => {
                 ...errors,
                 [name]: ''
             });
+        }
+
+        if (apiError) {
+            setApiError('');
         }
     };
 
@@ -64,12 +74,24 @@ const LoginPage = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (validateForm()) {
-            console.log('Login form submitted:', formData);
-            // Add your login logic here
+            setIsLoading(true);
+            setApiError('');
+
+            try {
+                const { email, password } = formData;
+                const result = await authService.login(email, password);
+                if (result.success) {
+                    navigate("/admin/dashboard");
+                }
+            } catch (error) {
+                setApiError('Error occured.')
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 

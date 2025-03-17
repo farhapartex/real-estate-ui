@@ -24,35 +24,47 @@ import BlogManagement from './pages/admin/BlogManagementPage';
 import BlogDetails from './pages/admin/BlogDetails';
 import BlogCreate from './pages/admin/BlogCreate';
 import BlogEditPage from './pages/admin/BlogEdit';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 
 const root = document.getElementById("root");
 
 ReactDOM.createRoot(root).render(
   <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/signup" element={<SignupPage />} />
-      <Route path="/profile" element={<ProfilePage />} />
-      <Route path="/property/:id" element={<PropertyDetailsPage />} />
-      <Route path="/properties" element={<PropertyListingPage />} />
-      <Route path="/blogs" element={<BlogListPage />} />
-      <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
-      <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
-      <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
-      <Route path="/owner/dashboard" element={<OwnerPropertiesPage />} />
-      <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
-      <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
-      <Route path="/admin" element={<AnalyticsDashboard />} />
-      <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
-      <Route path="/admin/users" element={<UserManagement />} />
-      <Route path="/admin/properties" element={<PropertyManagement />} />
-      <Route path="/admin/locations" element={<LocationManagement />} />
-      <Route path="/admin/blogs" element={<BlogManagement />} />
-      <Route path="/admin/blogs/view/:id" element={<BlogDetails />} />
-      <Route path="/admin/blogs/edit/:id" element={<BlogEditPage />} />
-      <Route path="/admin/blogs/new" element={<BlogCreate />} />
-    </Routes>
+    <AuthProvider>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/property/:id" element={<PropertyDetailsPage />} />
+          <Route path="/properties" element={<PropertyListingPage />} />
+          <Route path="/blogs" element={<BlogListPage />} />
+          <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
+
+          <Route path="/owner/dashboard" element={<OwnerPropertiesPage />} />
+          <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
+          <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
+          <Route path="/admin" element={<AnalyticsDashboard />} />
+          <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
+          <Route path="/admin/users" element={<UserManagement />} />
+          <Route path="/admin/properties" element={<PropertyManagement />} />
+          <Route path="/admin/locations" element={<LocationManagement />} />
+          <Route path="/admin/blogs" element={<BlogManagement />} />
+          <Route path="/admin/blogs/view/:id" element={<BlogDetails />} />
+          <Route path="/admin/blogs/edit/:id" element={<BlogEditPage />} />
+          <Route path="/admin/blogs/new" element={<BlogCreate />} />
+        </Route>
+
+        {/* <Route path="*" element={<Navigate replace to="/dashboard" />} /> */}
+
+
+      </Routes>
+    </AuthProvider>
+
   </BrowserRouter>
 );
 // If you want to start measuring performance in your app, pass a function

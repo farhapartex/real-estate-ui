@@ -31,6 +31,7 @@ import {
     mockDistricts
 } from '../../mockLocations';
 import AdminLayout from '../../layouts/AdminLayout';
+import { locationService } from '../../api/location';
 
 const LocationManagement = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -38,6 +39,9 @@ const LocationManagement = () => {
     const [divisions, setDivisions] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalItems, setTotalItems] = useState(0);
 
     const [addDialogOpen, setAddDialogOpen] = useState(false);
     const [editDialogOpen, setEditDialogOpen] = useState(false);
@@ -57,26 +61,78 @@ const LocationManagement = () => {
         { label: 'Districts', value: 'district' }
     ];
 
+
+    const fetchCountries = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.countryList(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data.map(country => ({
+                    id: country.id,
+                    name: country.name,
+                    code: country.code,
+                    active: true,
+                    divisionsCount: 0
+                }));
+                setCountries(formattedData);
+                setTotalItems(total);
+
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to fetch countries',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+            setSnackbar({
+                open: true,
+                message: 'An error occurred while fetching countries',
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
-        // Simulate API call
+        if (selectedTab === 0) {
+            fetchCountries();
+        } else {
+
+        }
         setLoading(true);
         setTimeout(() => {
-            setCountries(mockCountries);
-            setDivisions(mockDivisions);
-            setDistricts(mockDistricts);
+            if (selectedTab === 1) {
+                setDivisions(mockDivisions);
+            } else if (selectedTab === 2) {
+                setDistricts(mockDistricts);
+            }
             setLoading(false);
         }, 1000);
-    }, []);
+    }, [selectedTab, page, pageSize]);
 
     const handleRefresh = () => {
-        setLoading(true);
-        // In a real application, this would fetch fresh data from the API
-        setTimeout(() => {
-            setCountries(mockCountries);
-            setDivisions(mockDivisions);
-            setDistricts(mockDistricts);
-            setLoading(false);
-        }, 1000);
+        if (selectedTab === 0) {
+            fetchCountries();
+        } else {
+            setLoading(true);
+            setTimeout(() => {
+                if (selectedTab === 1) {
+                    setDivisions(mockDivisions);
+                } else if (selectedTab === 2) {
+                    setDistricts(mockDistricts);
+                }
+                setLoading(false);
+            }, 1000);
+        }
     };
 
     const handleTabChange = (event, newValue) => {

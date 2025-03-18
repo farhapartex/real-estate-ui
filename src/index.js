@@ -38,9 +38,12 @@ ReactDOM.createRoot(root).render(
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+        <Route path="/blogs" element={<BlogListPage />} />
+        <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
+        <Route path="/property/:id" element={<PropertyDetailsPage />} />
+        <Route path="/properties" element={<PropertyListingPage />} />
 
         <Route path="/admin" element={<ProtectedRoute allowedRoles={['admin']} />}>
-          {/* <Route path="/admin" element={<AnalyticsDashboard />} /> */}
           <Route path="dashboard" element={<AnalyticsDashboard />} />
           <Route path="users" element={<UserManagement />} />
           <Route path="properties" element={<PropertyManagement />} />
@@ -51,32 +54,16 @@ ReactDOM.createRoot(root).render(
           <Route path="blogs/new" element={<BlogCreate />} />
         </Route>
 
+        <Route path="/owner" element={<ProtectedRoute allowedRoles={['owner']} />}>
+          <Route path="dashboard" element={<OwnerPropertiesPage />} />
+          <Route path="properties" element={<OwnerPropertiesPage />} />
+          <Route path="properties/:id" element={<PropertyEditViewPage />} />
+        </Route>
+
 
         <Route element={<ProtectedRoute />}>
           <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/property/:id" element={<PropertyDetailsPage />} />
-          <Route path="/properties" element={<PropertyListingPage />} />
-          <Route path="/blogs" element={<BlogListPage />} />
-          <Route path="/blogs/:slug" element={<BlogDetailsPage />} />
-
-          <Route path="/owner/dashboard" element={<OwnerPropertiesPage />} />
-          <Route path="/owner/properties" element={<OwnerPropertiesPage />} />
-          <Route path="/owner/properties/:id" element={<PropertyEditViewPage />} />
-
-
-          {/* <Route path="/admin" element={<AnalyticsDashboard />} />
-          <Route path="/admin/dashboard" element={<AnalyticsDashboard />} />
-          <Route path="/admin/users" element={<UserManagement />} />
-          <Route path="/admin/properties" element={<PropertyManagement />} />
-          <Route path="/admin/locations" element={<LocationManagement />} />
-          <Route path="/admin/blogs" element={<BlogManagement />} />
-          <Route path="/admin/blogs/view/:id" element={<BlogDetails />} />
-          <Route path="/admin/blogs/edit/:id" element={<BlogEditPage />} />
-          <Route path="/admin/blogs/new" element={<BlogCreate />} /> */}
         </Route>
-
-        {/* <Route path="*" element={<Navigate replace to="/dashboard" />} /> */}
-
 
       </Routes>
     </AuthProvider>

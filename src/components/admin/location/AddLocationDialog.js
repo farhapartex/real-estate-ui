@@ -180,7 +180,7 @@ const AddLocationDialog = ({
                                 onChange={(e) => setParentId(e.target.value)}
                                 label="Select Country"
                             >
-                                {countries.filter(country => country.active).map((country) => (
+                                {countries.filter(country => country.status).map((country) => (
                                     <MenuItem key={country.id} value={country.id.toString()}>
                                         <Box display="flex" alignItems="center" gap={1}>
                                             <FlagIcon fontSize="small" />

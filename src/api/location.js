@@ -17,5 +17,21 @@ export const locationService = {
         } catch (error) {
             return { success: false, response: null };
         }
+    },
+    updateCountry: async (id, validatedData) => {
+        try {
+            const response = await apiClient.patch(`/admin/countries/${id}`, validatedData);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    deleteCountry: async (id) => {
+        try {
+            const response = await apiClient.delete(`/admin/countries/${id}`);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
     }
 }

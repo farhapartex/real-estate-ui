@@ -108,7 +108,6 @@ const LocationManagement = () => {
         try {
             const result = await locationService.createCountry(newLocation.name, newLocation.code);
             const { success, response } = result;
-            console.log(result);
             if (success) {
                 setCountries([...countries, response]);
             } else {
@@ -130,6 +129,62 @@ const LocationManagement = () => {
             setLoading(false);
         }
 
+    }
+
+    const updateCountry = async (id, validatedData) => {
+        setLoading(true);
+        try {
+            const result = await locationService.updateCountry(id, validatedData);
+            const { success, response } = result;
+            if (success) {
+                setCountries(countries.map(country =>
+                    country.id === id
+                        ? { ...country, name: response.name, code: response.code, status: response.status }
+                        : country
+                ));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to update country",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to update country",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const deleteCountry = async (id) => {
+        setLoading(true);
+        try {
+            const result = await locationService.deleteCountry(id);
+            const { success, response } = result;
+            if (success) {
+                setCountries(countries.filter(country => country.id !== id));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to delete country",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to delete country",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
     }
 
     useEffect(() => {
@@ -261,11 +316,11 @@ const LocationManagement = () => {
         // Update the location in the appropriate array
         switch (locationType) {
             case 'country':
-                setCountries(countries.map(country =>
-                    country.id === selectedItem.id
-                        ? { ...country, name: updatedLocation.name, code: updatedLocation.code }
-                        : country
-                ));
+                updateCountry(selectedItem.id, {
+                    name: updatedLocation.name,
+                    code: updatedLocation.code,
+                    status: updatedLocation.status,
+                })
                 break;
             case 'division':
                 // Check if parent country changed
@@ -349,20 +404,21 @@ const LocationManagement = () => {
         switch (locationType) {
             case 'country':
                 // Check if country has divisions
-                const hasChildren = divisions.some(division => division.countryId === selectedItem.id);
+                // const hasChildren = divisions.some(division => division.countryId === selectedItem.id);
 
-                if (hasChildren) {
-                    setSnackbar({
-                        open: true,
-                        message: `Cannot delete country. Please delete its divisions first.`,
-                        severity: 'error'
-                    });
-                    setDeleteDialogOpen(false);
-                    setSelectedItem(null);
-                    return;
-                }
+                // if (hasChildren) {
+                //     setSnackbar({
+                //         open: true,
+                //         message: `Cannot delete country. Please delete its divisions first.`,
+                //         severity: 'error'
+                //     });
+                //     setDeleteDialogOpen(false);
+                //     setSelectedItem(null);
+                //     return;
+                // }
 
-                setCountries(countries.filter(country => country.id !== selectedItem.id));
+                // setCountries(countries.filter(country => country.id !== selectedItem.id));
+                deleteCountry(selectedItem.id);
                 break;
             case 'division':
                 // Check if division has districts
@@ -417,11 +473,12 @@ const LocationManagement = () => {
         // Toggle the status in the appropriate array
         switch (locationType) {
             case 'country':
-                setCountries(countries.map(country =>
-                    country.id === item.id
-                        ? { ...country, active: !country.active }
-                        : country
-                ));
+                // setCountries(countries.map(country =>
+                //     country.id === item.id
+                //         ? { ...country, active: !country.active }
+                //         : country
+                // ));
+                updateCountry(item.id, { ...item, status: !item.status });
                 break;
             case 'division':
                 setDivisions(divisions.map(division =>

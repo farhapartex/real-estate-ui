@@ -86,7 +86,7 @@ const CountryList = ({ countries, loading, onEdit, onDelete, onToggleStatus }) =
                                             />
                                         </TableCell>
                                         <TableCell align="center">
-                                            {country.active ? (
+                                            {country.status ? (
                                                 <Chip
                                                     label="Active"
                                                     color="success"
@@ -102,20 +102,20 @@ const CountryList = ({ countries, loading, onEdit, onDelete, onToggleStatus }) =
                                         </TableCell>
                                         <TableCell align="center">
                                             <Chip
-                                                label={country.divisionsCount}
-                                                color={country.divisionsCount > 0 ? "info" : "default"}
+                                                label={country.divisions}
+                                                color={country.divisions > 0 ? "info" : "default"}
                                                 size="small"
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <Stack direction="row" spacing={1} justifyContent="center">
-                                                <Tooltip title={country.active ? "Deactivate" : "Activate"}>
+                                                <Tooltip title={country.status ? "Deactivate" : "Activate"}>
                                                     <IconButton
                                                         size="small"
-                                                        color={country.active ? "success" : "default"}
+                                                        color={country.status ? "success" : "default"}
                                                         onClick={() => onToggleStatus(country)}
                                                     >
-                                                        {country.active ? <ToggleOnIcon /> : <ToggleOffIcon />}
+                                                        {country.status ? <ToggleOnIcon /> : <ToggleOffIcon />}
                                                     </IconButton>
                                                 </Tooltip>
 

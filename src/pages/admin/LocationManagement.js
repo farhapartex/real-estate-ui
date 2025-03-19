@@ -77,8 +77,8 @@ const LocationManagement = () => {
                     id: country.id,
                     name: country.name,
                     code: country.code,
-                    active: true,
-                    divisionsCount: 0
+                    status: country.status,
+                    divisions: country.divisions
                 }));
                 setCountries(formattedData);
                 setTotalItems(total);
@@ -100,6 +100,36 @@ const LocationManagement = () => {
         } finally {
             setLoading(false);
         }
+    }
+
+    const createCountry = async (newLocation) => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.createCountry(newLocation.name, newLocation.code);
+            const { success, response } = result;
+            console.log(result);
+            if (success) {
+                setCountries([...countries, response]);
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: `An error occurred while creating country ${newLocation.name}`,
+                    severity: 'error'
+                });
+            }
+
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: `An error occurred while creating country ${newLocation.name}`,
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+
     }
 
     useEffect(() => {
@@ -173,14 +203,7 @@ const LocationManagement = () => {
         // Add the new location to the appropriate array
         switch (locationType) {
             case 'country':
-                const newCountry = {
-                    id: countries.length + 1,
-                    name: newLocation.name,
-                    code: newLocation.code,
-                    active: true,
-                    divisionsCount: 0
-                };
-                setCountries([...countries, newCountry]);
+                createCountry(newLocation);
                 break;
             case 'division':
                 const newDivision = {

@@ -13,7 +13,7 @@ export const locationService = {
     createCountry: async (name, code) => {
         try {
             const response = await apiClient.post("/admin/countries", { name, code });
-            return { success: true, response: response };
+            return { success: true, response: response.data };
         } catch (error) {
             return { success: false, response: null };
         }

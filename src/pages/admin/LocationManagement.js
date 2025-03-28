@@ -256,6 +256,62 @@ const LocationManagement = () => {
         }
     }
 
+    const updateDivision = async (id, validatedData) => {
+        setLoading(true);
+        try {
+            const result = await locationService.updateDivision(id, validatedData);
+            const { success, response } = result;
+            if (success) {
+                setDivisions(divisions.map(division =>
+                    division.id === id
+                        ? { ...division, name: response.name, status: response.status, country: response.country }
+                        : division
+                ));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to update division",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to update division",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const deleteDivision = async (id) => {
+        setLoading(true);
+        try {
+            const result = await locationService.deleteDivision(id);
+            const { success, response } = result;
+            if (success) {
+                setDivisions(divisions.filter(division => division.id !== id));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to delete division",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to delete division",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     useEffect(() => {
         if (selectedTab === 0) {
             fetchCountries();
@@ -330,23 +386,7 @@ const LocationManagement = () => {
                 createCountry(newLocation);
                 break;
             case 'division':
-                // const newDivision = {
-                //     id: divisions.length + 1,
-                //     name: newLocation.name,
-                //     countryId: parseInt(newLocation.parentId),
-                //     countryName: countries.find(c => c.id === parseInt(newLocation.parentId))?.name || 'Unknown',
-                //     active: true,
-                //     districtsCount: 0
-                // };
                 createDivision(newLocation);
-                //setDivisions([...divisions, newDivision]);
-
-                // Update the divisionsCount for the parent country
-                // setCountries(countries.map(country =>
-                //     country.id === parseInt(newLocation.parentId)
-                //         ? { ...country, divisionsCount: country.divisionsCount + 1 }
-                //         : country
-                // ));
                 break;
             case 'district':
                 const selectedDivision = divisions.find(div => div.id === parseInt(newLocation.parentId));
@@ -393,33 +433,11 @@ const LocationManagement = () => {
                 })
                 break;
             case 'division':
-                // Check if parent country changed
-                const oldCountryId = selectedItem.countryId;
-                const newCountryId = parseInt(updatedLocation.parentId);
-                const countryChanged = oldCountryId !== newCountryId;
-
-                setDivisions(divisions.map(division =>
-                    division.id === selectedItem.id
-                        ? {
-                            ...division,
-                            name: updatedLocation.name,
-                            countryId: newCountryId,
-                            countryName: countries.find(c => c.id === newCountryId)?.name || 'Unknown'
-                        }
-                        : division
-                ));
-
-                // Update country division counts if parent changed
-                if (countryChanged) {
-                    setCountries(countries.map(country => {
-                        if (country.id === oldCountryId) {
-                            return { ...country, divisionsCount: Math.max(0, country.divisionsCount - 1) };
-                        } else if (country.id === newCountryId) {
-                            return { ...country, divisionsCount: country.divisionsCount + 1 };
-                        }
-                        return country;
-                    }));
-                }
+                updateDivision(selectedItem.id, {
+                    country_id: parseInt(updatedLocation.parentId),
+                    name: updatedLocation.name,
+                    status: updatedLocation.status
+                });
                 break;
             case 'district':
                 // Check if parent division changed
@@ -476,28 +494,7 @@ const LocationManagement = () => {
                 deleteCountry(selectedItem.id);
                 break;
             case 'division':
-                // Check if division has districts
-                const hasDependentDistricts = districts.some(district => district.divisionId === selectedItem.id);
-
-                if (hasDependentDistricts) {
-                    setSnackbar({
-                        open: true,
-                        message: `Cannot delete division. Please delete its districts first.`,
-                        severity: 'error'
-                    });
-                    setDeleteDialogOpen(false);
-                    setSelectedItem(null);
-                    return;
-                }
-
-                setDivisions(divisions.filter(division => division.id !== selectedItem.id));
-
-                // Update country division count
-                setCountries(countries.map(country =>
-                    country.id === selectedItem.countryId
-                        ? { ...country, divisionsCount: Math.max(0, country.divisionsCount - 1) }
-                        : country
-                ));
+                deleteDivision(selectedItem.id);
                 break;
             case 'district':
                 setDistricts(districts.filter(district => district.id !== selectedItem.id));
@@ -528,20 +525,22 @@ const LocationManagement = () => {
         // Toggle the status in the appropriate array
         switch (locationType) {
             case 'country':
-                // setCountries(countries.map(country =>
-                //     country.id === item.id
-                //         ? { ...country, active: !country.active }
-                //         : country
-                // ));
                 updateCountry(item.id, { ...item, status: !item.status });
                 break;
             case 'division':
-                setDivisions(divisions.map(division =>
-                    division.id === item.id
-                        ? { ...division, active: !division.active }
-                        : division
-                ));
+                console.log("division: ", item)
+                updateDivision(item.id, {
+                    country_id: parseInt(item.country.id),
+                    name: item.name,
+                    status: !item.status
+                });
                 break;
+            // setDivisions(divisions.map(division =>
+            //     division.id === item.id
+            //         ? { ...division, active: !division.active }
+            //         : division
+            // ));
+            // break;
             case 'district':
                 setDistricts(districts.map(district =>
                     district.id === item.id

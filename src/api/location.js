@@ -51,4 +51,20 @@ export const locationService = {
             return { success: false, response: null };
         }
     },
+    updateDivision: async (id, validatedData) => {
+        try {
+            const response = await apiClient.patch(`/admin/divisions/${id}`, validatedData);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    deleteDivision: async (id) => {
+        try {
+            const response = await apiClient.delete(`/admin/divisions/${id}`);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

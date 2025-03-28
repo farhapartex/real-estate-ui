@@ -46,7 +46,7 @@ const EditLocationDialog = ({
             if (locationType === 'country') {
                 setCode(location.code || '');
             } else if (locationType === 'division') {
-                setParentId(location.countryId ? location.countryId.toString() : '');
+                setParentId(location.country.id ? location.country.id.toString() : '');
             } else if (locationType === 'district') {
                 setParentId(location.divisionId ? location.divisionId.toString() : '');
             }
@@ -168,7 +168,7 @@ const EditLocationDialog = ({
                                 onChange={(e) => setParentId(e.target.value)}
                                 label="Select Country"
                             >
-                                {countries.filter(country => country.active).map((country) => (
+                                {countries.filter(country => country.status).map((country) => (
                                     <MenuItem key={country.id} value={country.id.toString()}>
                                         <Box display="flex" alignItems="center" gap={1}>
                                             <FlagIcon fontSize="small" />

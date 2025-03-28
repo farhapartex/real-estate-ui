@@ -23,6 +23,7 @@ import {
     LocationOn as DistrictIcon,
     Edit as EditIcon
 } from '@mui/icons-material';
+import { locationService } from '../../../api/location';
 
 const EditLocationDialog = ({
     open,
@@ -31,12 +32,40 @@ const EditLocationDialog = ({
     locationType,
     location,
     countries,
-    divisions
+    divisions,
+    setDivisions
 }) => {
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
     const [parentId, setParentId] = useState('');
     const [errors, setErrors] = useState({});
+
+    const fetchDivisions = async () => {
+
+        try {
+            const result = await locationService.divisionList(1, 10);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                const formattedData = data.map(division => ({
+                    id: division.id,
+                    name: division.name,
+                    country: division.country,
+                    status: division.status,
+                    districts: division.districts
+                }));
+
+                setDivisions(formattedData);
+
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        } finally {
+            //setLoading(false);
+        }
+    }
 
     // Set form values on location change
     useEffect(() => {
@@ -48,6 +77,9 @@ const EditLocationDialog = ({
             } else if (locationType === 'division') {
                 setParentId(location.country.id ? location.country.id.toString() : '');
             } else if (locationType === 'district') {
+                if (divisions.length === 0) {
+                    fetchDivisions();
+                }
                 setParentId(location.divisionId ? location.divisionId.toString() : '');
             }
 
@@ -195,11 +227,11 @@ const EditLocationDialog = ({
                                 onChange={(e) => setParentId(e.target.value)}
                                 label="Select Division"
                             >
-                                {divisions.filter(division => division.active).map((division) => (
+                                {divisions.filter(division => division.status).map((division) => (
                                     <MenuItem key={division.id} value={division.id.toString()}>
                                         <Box display="flex" alignItems="center" gap={1}>
                                             <DivisionIcon fontSize="small" />
-                                            {division.name} ({division.countryName})
+                                            {division.name} ({division.country.name})
                                         </Box>
                                     </MenuItem>
                                 ))}

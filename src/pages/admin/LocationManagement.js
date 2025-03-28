@@ -328,6 +328,44 @@ const LocationManagement = () => {
         }
     }
 
+    const updateDistrict = async (id, validatedData) => {
+        setLoading(true);
+        try {
+            const result = await locationService.updateDistrict(id, validatedData);
+            const { success, response } = result;
+            if (success) {
+                setDistricts(districts.map(district =>
+                    district.id === id
+                        ? {
+                            ...district,
+                            name: response.name,
+                            status: response.status,
+                            divisionId: response.division.id,
+                            divisionName: response.division.name,
+                            countryId: response.division.country.id,
+                            countryName: response.division.country.name,
+                        }
+                        : district
+                ));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to update district",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to update district",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const deleteDivision = async (id) => {
         setLoading(true);
         try {
@@ -347,6 +385,32 @@ const LocationManagement = () => {
             setSnackbar({
                 open: true,
                 message: "Failed to delete division",
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const deleteDistrict = async (id) => {
+        setLoading(true);
+        try {
+            const result = await locationService.deleteDistrict(id);
+            const { success, response } = result;
+            if (success) {
+                setDistricts(districts.filter(district => district.id !== id));
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: response?.error || "Failed to delete district",
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: "Failed to delete district",
                 severity: 'error'
             });
         } finally {
@@ -483,36 +547,39 @@ const LocationManagement = () => {
                 break;
             case 'district':
                 // Check if parent division changed
-                const oldDivisionId = selectedItem.divisionId;
+
                 const newDivisionId = parseInt(updatedLocation.parentId);
-                const divisionChanged = oldDivisionId !== newDivisionId;
 
-                const newParentDivision = divisions.find(div => div.id === newDivisionId);
+                updateDistrict(selectedItem.id, {
+                    name: updatedLocation.name,
+                    division_id: newDivisionId,
+                    status: updatedLocation.status
+                });
 
-                setDistricts(districts.map(district =>
-                    district.id === selectedItem.id
-                        ? {
-                            ...district,
-                            name: updatedLocation.name,
-                            divisionId: newDivisionId,
-                            divisionName: newParentDivision?.name || 'Unknown',
-                            countryId: newParentDivision?.countryId,
-                            countryName: newParentDivision?.countryName || 'Unknown'
-                        }
-                        : district
-                ));
+                // setDistricts(districts.map(district =>
+                //     district.id === selectedItem.id
+                //         ? {
+                //             ...district,
+                //             name: updatedLocation.name,
+                //             divisionId: newDivisionId,
+                //             divisionName: newParentDivision?.name || 'Unknown',
+                //             countryId: newParentDivision?.countryId,
+                //             countryName: newParentDivision?.countryName || 'Unknown'
+                //         }
+                //         : district
+                // ));
 
                 // Update division district counts if parent changed
-                if (divisionChanged) {
-                    setDivisions(divisions.map(division => {
-                        if (division.id === oldDivisionId) {
-                            return { ...division, districtsCount: Math.max(0, division.districtsCount - 1) };
-                        } else if (division.id === newDivisionId) {
-                            return { ...division, districtsCount: division.districtsCount + 1 };
-                        }
-                        return division;
-                    }));
-                }
+                // if (divisionChanged) {
+                //     setDivisions(divisions.map(division => {
+                //         if (division.id === oldDivisionId) {
+                //             return { ...division, districtsCount: Math.max(0, division.districtsCount - 1) };
+                //         } else if (division.id === newDivisionId) {
+                //             return { ...division, districtsCount: division.districtsCount + 1 };
+                //         }
+                //         return division;
+                //     }));
+                // }
                 break;
             default:
                 break;
@@ -539,14 +606,15 @@ const LocationManagement = () => {
                 deleteDivision(selectedItem.id);
                 break;
             case 'district':
-                setDistricts(districts.filter(district => district.id !== selectedItem.id));
+                deleteDistrict(selectedItem.id);
+                //setDistricts(districts.filter(district => district.id !== selectedItem.id));
 
                 // Update division district count
-                setDivisions(divisions.map(division =>
-                    division.id === selectedItem.divisionId
-                        ? { ...division, districtsCount: Math.max(0, division.districtsCount - 1) }
-                        : division
-                ));
+                // setDivisions(divisions.map(division =>
+                //     division.id === selectedItem.divisionId
+                //         ? { ...division, districtsCount: Math.max(0, division.districtsCount - 1) }
+                //         : division
+                // ));
                 break;
             default:
                 break;
@@ -685,6 +753,7 @@ const LocationManagement = () => {
                     locationType={tabs[selectedTab].value}
                     countries={countries}
                     divisions={divisions}
+                    setDivisions={setDivisions}
                 />
 
                 {/* Edit Location Dialog */}
@@ -697,6 +766,7 @@ const LocationManagement = () => {
                         location={selectedItem}
                         countries={countries}
                         divisions={divisions}
+                        setDivisions={setDivisions}
                     />
                 )}
 

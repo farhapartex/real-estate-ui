@@ -27,7 +27,9 @@ const PropertySearchForm = ({
     divisions,
     divisionId,
     setDivisionId,
-    districts = ['District 1', 'District 2', 'District 3'],
+    districts,
+    districtId,
+    setDistrictId,
     propertyTypes = ['Apartment', 'House', 'Condo', 'Townhouse', 'Villa']
 }) => {
     const theme = useTheme();
@@ -205,16 +207,18 @@ const PropertySearchForm = ({
                                 <InputLabel>District</InputLabel>
                                 <Select
                                     name="district"
-                                    value={formValues.district}
-                                    onChange={handleChange}
+                                    value={districtId}
+                                    onChange={(event) => {
+                                        setDistrictId(parseInt(event.target.value));
+                                    }}
                                     label="District"
                                 >
                                     <MenuItem value="">
                                         <em>Any</em>
                                     </MenuItem>
                                     {districts.map((district) => (
-                                        <MenuItem key={district} value={district}>
-                                            {district}
+                                        <MenuItem key={district.id} value={district.id}>
+                                            {district.name}
                                         </MenuItem>
                                     ))}
                                 </Select>

@@ -27,8 +27,17 @@ export const locationService = {
             });
             return { success: true, response: response.data };
         } catch (error) {
-            console.error(`Error fetching divisions for country ${countryId}:`, error);
-            throw error;
+            return { success: false, response: null };
+        }
+    },
+    getDistrictByDivision: async (divisionId, page = 1, pageSize = 10) => {
+        try {
+            const response = await publicApiClient.get(`/divisions/${divisionId}/districts`, {
+                params: { page, page_size: pageSize }
+            });
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
         }
     },
     createCountry: async (name, code) => {

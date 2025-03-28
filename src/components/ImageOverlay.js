@@ -27,6 +27,7 @@ const ImageTextOverlay = ({
     const [divisions, setDivisions] = useState([]);
     const [districts, setDistricts] = useState([]);
     const [divisionId, setDivisionId] = useState(null);
+    const [districtId, setDistrictId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
 
@@ -64,7 +65,6 @@ const ImageTextOverlay = ({
             const result = await locationService.getDivisionsByCountry(countryId, page, pageSize);
 
             const { success, response } = result;
-            console.log("result", response);
             const { data, rpage, rpageSize, total } = response;
 
             if (success) {
@@ -81,6 +81,34 @@ const ImageTextOverlay = ({
             console.error('Error fetching countries:', error);
         } finally {
             setLoading(false);
+            setDistricts([]); // Reset districts when country changes
+            setDivisionId(null); // Reset division ID when country changes
+        }
+    }
+
+    const fetchDistrics = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.getDistrictByDivision(divisionId, page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data ? data.map(district => ({
+                    id: district.id,
+                    name: district.name,
+                })) : [];
+                setDistricts(formattedData);
+                setTotalItems(total);
+
+            }
+        } catch (error) {
+            console.error('Error fetching districts:', error);
+        } finally {
+            setLoading(false);
         }
     }
 
@@ -93,6 +121,12 @@ const ImageTextOverlay = ({
             fetchDivisions();
         }
     }, [countryId]);
+
+    useEffect(() => {
+        if (divisionId) {
+            fetchDistrics();
+        }
+    }, [divisionId]);
 
     return (
         <Box
@@ -161,6 +195,8 @@ const ImageTextOverlay = ({
                     divisionId={divisionId}
                     setDivisionId={setDivisionId}
                     districts={districts}
+                    districtId={districtId}
+                    setDistrictId={setDistrictId}
                     propertyTypes={propertyTypes}
                 />
             </Box>

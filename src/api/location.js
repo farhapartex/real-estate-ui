@@ -33,5 +33,14 @@ export const locationService = {
         } catch (error) {
             return { success: false, response: null };
         }
-    }
+    },
+    divisionList: async (page = 1, pageSize = 10) => {
+        try {
+            const response = await apiClient.get(`/admin/divisions?page=${page}&pageSize=${pageSize}`);
+            console.log(response.data);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

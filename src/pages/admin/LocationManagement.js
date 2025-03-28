@@ -102,6 +102,46 @@ const LocationManagement = () => {
         }
     }
 
+    const fetchDivisions = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.divisionList(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data.map(division => ({
+                    id: division.id,
+                    name: division.name,
+                    country: division.country,
+                    status: division.status,
+                    districts: division.districts
+                }));
+                setDivisions(formattedData);
+                setTotalItems(total);
+
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to fetch countries',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+            setSnackbar({
+                open: true,
+                message: 'An error occurred while fetching countries',
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const createCountry = async (newLocation) => {
         setLoading(true);
 
@@ -196,7 +236,7 @@ const LocationManagement = () => {
         setLoading(true);
         setTimeout(() => {
             if (selectedTab === 1) {
-                setDivisions(mockDivisions);
+                fetchDivisions();
             } else if (selectedTab === 2) {
                 setDistricts(mockDistricts);
             }
@@ -211,7 +251,7 @@ const LocationManagement = () => {
             setLoading(true);
             setTimeout(() => {
                 if (selectedTab === 1) {
-                    setDivisions(mockDivisions);
+                    fetchDivisions();
                 } else if (selectedTab === 2) {
                     setDistricts(mockDistricts);
                 }
@@ -403,21 +443,6 @@ const LocationManagement = () => {
         // Delete the location from the appropriate array
         switch (locationType) {
             case 'country':
-                // Check if country has divisions
-                // const hasChildren = divisions.some(division => division.countryId === selectedItem.id);
-
-                // if (hasChildren) {
-                //     setSnackbar({
-                //         open: true,
-                //         message: `Cannot delete country. Please delete its divisions first.`,
-                //         severity: 'error'
-                //     });
-                //     setDeleteDialogOpen(false);
-                //     setSelectedItem(null);
-                //     return;
-                // }
-
-                // setCountries(countries.filter(country => country.id !== selectedItem.id));
                 deleteCountry(selectedItem.id);
                 break;
             case 'division':

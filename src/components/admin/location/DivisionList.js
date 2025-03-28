@@ -81,11 +81,11 @@ const DivisionList = ({ divisions, loading, onEdit, onDelete, onToggleStatus }) 
                                         <TableCell>
                                             <Box display="flex" alignItems="center" gap={1}>
                                                 <FlagIcon fontSize="small" color="action" />
-                                                <Typography variant="body2">{division.countryName}</Typography>
+                                                <Typography variant="body2">{division.country.name}</Typography>
                                             </Box>
                                         </TableCell>
                                         <TableCell align="center">
-                                            {division.active ? (
+                                            {division.status ? (
                                                 <Chip
                                                     label="Active"
                                                     color="success"
@@ -101,20 +101,20 @@ const DivisionList = ({ divisions, loading, onEdit, onDelete, onToggleStatus }) 
                                         </TableCell>
                                         <TableCell align="center">
                                             <Chip
-                                                label={division.districtsCount}
-                                                color={division.districtsCount > 0 ? "info" : "default"}
+                                                label={division.districts}
+                                                color={division.districts > 0 ? "info" : "default"}
                                                 size="small"
                                             />
                                         </TableCell>
                                         <TableCell align="center">
                                             <Stack direction="row" spacing={1} justifyContent="center">
-                                                <Tooltip title={division.active ? "Deactivate" : "Activate"}>
+                                                <Tooltip title={division.status ? "Deactivate" : "Activate"}>
                                                     <IconButton
                                                         size="small"
-                                                        color={division.active ? "success" : "default"}
+                                                        color={division.status ? "success" : "default"}
                                                         onClick={() => onToggleStatus(division)}
                                                     >
-                                                        {division.active ? <ToggleOnIcon /> : <ToggleOffIcon />}
+                                                        {division.status ? <ToggleOnIcon /> : <ToggleOffIcon />}
                                                     </IconButton>
                                                 </Tooltip>
 

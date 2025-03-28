@@ -242,6 +242,44 @@ const LocationManagement = () => {
 
     }
 
+    const createDistrict = async (newLocation) => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.createDistrict(newLocation.name, parseInt(newLocation.parentId));
+            const { success, response } = result;
+            if (success) {
+                const newDistrict = {
+                    id: response.id,
+                    name: response.name,
+                    divisionId: response.division.id,
+                    divisionName: response.division.name,
+                    countryId: response.division.country.id,
+                    countryName: response.division.country.name,
+                    status: response.status
+                }
+                setDistricts([...districts, newDistrict]);
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: `An error occurred while creating district ${newLocation.name}`,
+                    severity: 'error'
+                });
+            }
+
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: `An error occurred while creating district ${newLocation.name}`,
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
     const updateCountry = async (id, validatedData) => {
         setLoading(true);
         try {
@@ -444,7 +482,7 @@ const LocationManagement = () => {
                 if (selectedTab === 1) {
                     fetchDivisions();
                 } else if (selectedTab === 2) {
-                    setDistricts(mockDistricts);
+                    fetchDistricts();
                 }
                 setLoading(false);
             }, 1000);
@@ -495,24 +533,25 @@ const LocationManagement = () => {
                 createDivision(newLocation);
                 break;
             case 'district':
-                const selectedDivision = divisions.find(div => div.id === parseInt(newLocation.parentId));
-                const newDistrict = {
-                    id: districts.length + 1,
-                    name: newLocation.name,
-                    divisionId: parseInt(newLocation.parentId),
-                    divisionName: selectedDivision?.name || 'Unknown',
-                    countryId: selectedDivision?.countryId,
-                    countryName: selectedDivision?.countryName || 'Unknown',
-                    active: true
-                };
-                setDistricts([...districts, newDistrict]);
+                createDistrict(newLocation);
+                // const selectedDivision = divisions.find(div => div.id === parseInt(newLocation.parentId));
+                // const newDistrict = {
+                //     id: districts.length + 1,
+                //     name: newLocation.name,
+                //     divisionId: parseInt(newLocation.parentId),
+                //     divisionName: selectedDivision?.name || 'Unknown',
+                //     countryId: selectedDivision?.countryId,
+                //     countryName: selectedDivision?.countryName || 'Unknown',
+                //     active: true
+                // };
+                // setDistricts([...districts, newDistrict]);
 
-                // Update the districtsCount for the parent division
-                setDivisions(divisions.map(division =>
-                    division.id === parseInt(newLocation.parentId)
-                        ? { ...division, districtsCount: division.districtsCount + 1 }
-                        : division
-                ));
+                // // Update the districtsCount for the parent division
+                // setDivisions(divisions.map(division =>
+                //     division.id === parseInt(newLocation.parentId)
+                //         ? { ...division, districtsCount: division.districtsCount + 1 }
+                //         : division
+                // ));
                 break;
             default:
                 break;
@@ -555,31 +594,6 @@ const LocationManagement = () => {
                     division_id: newDivisionId,
                     status: updatedLocation.status
                 });
-
-                // setDistricts(districts.map(district =>
-                //     district.id === selectedItem.id
-                //         ? {
-                //             ...district,
-                //             name: updatedLocation.name,
-                //             divisionId: newDivisionId,
-                //             divisionName: newParentDivision?.name || 'Unknown',
-                //             countryId: newParentDivision?.countryId,
-                //             countryName: newParentDivision?.countryName || 'Unknown'
-                //         }
-                //         : district
-                // ));
-
-                // Update division district counts if parent changed
-                // if (divisionChanged) {
-                //     setDivisions(divisions.map(division => {
-                //         if (division.id === oldDivisionId) {
-                //             return { ...division, districtsCount: Math.max(0, division.districtsCount - 1) };
-                //         } else if (division.id === newDivisionId) {
-                //             return { ...division, districtsCount: division.districtsCount + 1 };
-                //         }
-                //         return division;
-                //     }));
-                // }
                 break;
             default:
                 break;
@@ -646,11 +660,11 @@ const LocationManagement = () => {
                 });
                 break;
             case 'district':
-                setDistricts(districts.map(district =>
-                    district.id === item.id
-                        ? { ...district, active: !district.active }
-                        : district
-                ));
+                updateDistrict(item.id, {
+                    name: item.name,
+                    division_id: item.divisionId,
+                    status: !item.status
+                });
                 break;
             default:
                 break;

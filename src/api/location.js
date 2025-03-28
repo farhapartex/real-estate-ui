@@ -1,4 +1,4 @@
-import { apiClient } from "./baseAPI"
+import { apiClient, publicApiClient } from "./baseAPI"
 
 export const locationService = {
     countryList: async (page = 1, pageSize = 10) => {
@@ -8,6 +8,27 @@ export const locationService = {
             return { success: true, response: response.data };
         } catch (error) {
             return { success: false, response: null };
+        }
+    },
+    getPublicCountries: async (page = 1, pageSize = 10) => {
+        try {
+            const response = await publicApiClient.get('/countries', {
+                params: { page, page_size: pageSize }
+            });
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    getDivisionsByCountry: async (countryId, page = 1, pageSize = 10) => {
+        try {
+            const response = await publicApiClient.get(`/countries/${countryId}/divisions`, {
+                params: { page, page_size: pageSize }
+            });
+            return response.data;
+        } catch (error) {
+            console.error(`Error fetching divisions for country ${countryId}:`, error);
+            throw error;
         }
     },
     createCountry: async (name, code) => {

@@ -9,6 +9,13 @@ export const apiClient = axios.create({
     },
 });
 
+export const publicApiClient = axios.create({
+    baseURL: `${API_BASE_URL}/web`,
+    headers: {
+        'Content-Type': 'application/json'
+    },
+});
+
 
 apiClient.interceptors.request.use(
     (config) => {

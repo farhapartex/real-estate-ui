@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import PropertySearchForm from './search/PropertySearchForm';
+import { locationService } from '../api/location';
 
-const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'France', 'Spain'];
+// const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'France', 'Spain'];
 const divisions = ['North', 'South', 'East', 'West', 'Central'];
 const districts = ['District 1', 'District 2', 'District 3', 'District 4', 'District 5'];
 const propertyTypes = ['Apartment', 'House', 'Villa', 'Condo', 'Townhouse', 'Land', 'Commercial'];
@@ -18,6 +19,54 @@ const ImageTextOverlay = ({
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
     const isTablet = useMediaQuery(theme.breakpoints.down('md'));
+
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [countries, setCountries] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [totalItems, setTotalItems] = useState(0);
+
+    const fetchCountries = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.getPublicCountries(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data.map(country => ({
+                    id: country.id,
+                    name: country.name,
+                    code: country.code
+                }));
+                setCountries(formattedData);
+                setTotalItems(total);
+
+            } else {
+                // setSnackbar({
+                //     open: true,
+                //     message: 'Failed to fetch countries',
+                //     severity: 'error'
+                // });
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+            // setSnackbar({
+            //     open: true,
+            //     message: 'An error occurred while fetching countries',
+            //     severity: 'error'
+            // });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        fetchCountries();
+    }, [page, pageSize]);
 
     return (
         <Box

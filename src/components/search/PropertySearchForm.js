@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 
 const PropertySearchForm = ({
-    countries = ['USA', 'Canada', 'UK', 'Australia'],
+    countries,
     divisions = ['Division 1', 'Division 2', 'Division 3'],
     districts = ['District 1', 'District 2', 'District 3'],
     propertyTypes = ['Apartment', 'House', 'Condo', 'Townhouse', 'Villa']
@@ -163,8 +163,8 @@ const PropertySearchForm = ({
                                         <em>Any</em>
                                     </MenuItem>
                                     {countries.map((country) => (
-                                        <MenuItem key={country} value={country}>
-                                            {country}
+                                        <MenuItem key={country.id} value={country.id}>
+                                            {country.name}
                                         </MenuItem>
                                     ))}
                                 </Select>

@@ -171,6 +171,35 @@ const LocationManagement = () => {
 
     }
 
+    const createDivision = async (newLocation) => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.createDivision(newLocation.name, parseInt(newLocation.parentId));
+            const { success, response } = result;
+            if (success) {
+                setDivisions([...divisions, response]);
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: `An error occurred while creating division ${newLocation.name}`,
+                    severity: 'error'
+                });
+            }
+
+        } catch (error) {
+            console.log(error)
+            setSnackbar({
+                open: true,
+                message: `An error occurred while creating division ${newLocation.name}`,
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
     const updateCountry = async (id, validatedData) => {
         setLoading(true);
         try {
@@ -301,22 +330,23 @@ const LocationManagement = () => {
                 createCountry(newLocation);
                 break;
             case 'division':
-                const newDivision = {
-                    id: divisions.length + 1,
-                    name: newLocation.name,
-                    countryId: parseInt(newLocation.parentId),
-                    countryName: countries.find(c => c.id === parseInt(newLocation.parentId))?.name || 'Unknown',
-                    active: true,
-                    districtsCount: 0
-                };
-                setDivisions([...divisions, newDivision]);
+                // const newDivision = {
+                //     id: divisions.length + 1,
+                //     name: newLocation.name,
+                //     countryId: parseInt(newLocation.parentId),
+                //     countryName: countries.find(c => c.id === parseInt(newLocation.parentId))?.name || 'Unknown',
+                //     active: true,
+                //     districtsCount: 0
+                // };
+                createDivision(newLocation);
+                //setDivisions([...divisions, newDivision]);
 
                 // Update the divisionsCount for the parent country
-                setCountries(countries.map(country =>
-                    country.id === parseInt(newLocation.parentId)
-                        ? { ...country, divisionsCount: country.divisionsCount + 1 }
-                        : country
-                ));
+                // setCountries(countries.map(country =>
+                //     country.id === parseInt(newLocation.parentId)
+                //         ? { ...country, divisionsCount: country.divisionsCount + 1 }
+                //         : country
+                // ));
                 break;
             case 'district':
                 const selectedDivision = divisions.find(div => div.id === parseInt(newLocation.parentId));

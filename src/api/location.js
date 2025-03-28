@@ -43,4 +43,12 @@ export const locationService = {
             return { success: false, response: null };
         }
     },
+    createDivision: async (name, country_id) => {
+        try {
+            const response = await apiClient.post("/admin/divisions", { name, country_id });
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

@@ -67,4 +67,37 @@ export const locationService = {
             return { success: false, response: null };
         }
     },
+    districtList: async (page = 1, pageSize = 10) => {
+        try {
+            const response = await apiClient.get(`/admin/districts?page=${page}&pageSize=${pageSize}`);
+            console.log(response.data);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    createDistrict: async (name, division_id) => {
+        try {
+            const response = await apiClient.post("/admin/districts", { name, division_id });
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    updateDistrict: async (id, validatedData) => {
+        try {
+            const response = await apiClient.patch(`/admin/districts/${id}`, validatedData);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
+    deleteDistrict: async (id) => {
+        try {
+            const response = await apiClient.delete(`/admin/districts/${id}`);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

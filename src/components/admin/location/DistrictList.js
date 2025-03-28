@@ -92,7 +92,7 @@ const DistrictList = ({ districts, loading, onEdit, onDelete, onToggleStatus }) 
                                             </Box>
                                         </TableCell>
                                         <TableCell align="center">
-                                            {district.active ? (
+                                            {district.status ? (
                                                 <Chip
                                                     label="Active"
                                                     color="success"
@@ -108,13 +108,13 @@ const DistrictList = ({ districts, loading, onEdit, onDelete, onToggleStatus }) 
                                         </TableCell>
                                         <TableCell align="center">
                                             <Stack direction="row" spacing={1} justifyContent="center">
-                                                <Tooltip title={district.active ? "Deactivate" : "Activate"}>
+                                                <Tooltip title={district.status ? "Deactivate" : "Activate"}>
                                                     <IconButton
                                                         size="small"
-                                                        color={district.active ? "success" : "default"}
+                                                        color={district.status ? "success" : "default"}
                                                         onClick={() => onToggleStatus(district)}
                                                     >
-                                                        {district.active ? <ToggleOnIcon /> : <ToggleOffIcon />}
+                                                        {district.status ? <ToggleOnIcon /> : <ToggleOffIcon />}
                                                     </IconButton>
                                                 </Tooltip>
 

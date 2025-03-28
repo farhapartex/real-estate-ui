@@ -142,6 +142,48 @@ const LocationManagement = () => {
         }
     }
 
+    const fetchDistricts = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.districtList(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data.map(district => ({
+                    id: district.id,
+                    name: district.name,
+                    divisionId: district.division.id,
+                    divisionName: district.division.name,
+                    countryId: district.division.country.id,
+                    countryName: district.division.country.name,
+                    status: district.status,
+                }));
+                setDistricts(formattedData);
+                setTotalItems(total);
+
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to fetch countries',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching districts:', error);
+            setSnackbar({
+                open: true,
+                message: 'An error occurred while fetching districts',
+                severity: 'error'
+            });
+        } finally {
+            setLoading(false);
+        }
+    }
+
     const createCountry = async (newLocation) => {
         setLoading(true);
 
@@ -323,7 +365,7 @@ const LocationManagement = () => {
             if (selectedTab === 1) {
                 fetchDivisions();
             } else if (selectedTab === 2) {
-                setDistricts(mockDistricts);
+                fetchDistricts();
             }
             setLoading(false);
         }, 1000);
@@ -535,12 +577,6 @@ const LocationManagement = () => {
                     status: !item.status
                 });
                 break;
-            // setDivisions(divisions.map(division =>
-            //     division.id === item.id
-            //         ? { ...division, active: !division.active }
-            //         : division
-            // ));
-            // break;
             case 'district':
                 setDistricts(districts.map(district =>
                     district.id === item.id

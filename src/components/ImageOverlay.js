@@ -4,8 +4,8 @@ import PropertySearchForm from './search/PropertySearchForm';
 import { locationService } from '../api/location';
 
 // const countries = ['USA', 'UK', 'Canada', 'Australia', 'Germany', 'France', 'Spain'];
-const divisions = ['North', 'South', 'East', 'West', 'Central'];
-const districts = ['District 1', 'District 2', 'District 3', 'District 4', 'District 5'];
+//const divisions = ['North', 'South', 'East', 'West', 'Central'];
+//const districts = ['District 1', 'District 2', 'District 3', 'District 4', 'District 5'];
 const propertyTypes = ['Apartment', 'House', 'Villa', 'Condo', 'Townhouse', 'Land', 'Commercial'];
 
 const ImageTextOverlay = ({
@@ -23,6 +23,10 @@ const ImageTextOverlay = ({
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [countries, setCountries] = useState([]);
+    const [countryId, setCountryId] = useState(null);
+    const [divisions, setDivisions] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [divisionId, setDivisionId] = useState(null);
     const [loading, setLoading] = useState(true);
     const [totalItems, setTotalItems] = useState(0);
 
@@ -45,20 +49,36 @@ const ImageTextOverlay = ({
                 setCountries(formattedData);
                 setTotalItems(total);
 
-            } else {
-                // setSnackbar({
-                //     open: true,
-                //     message: 'Failed to fetch countries',
-                //     severity: 'error'
-                // });
             }
         } catch (error) {
             console.error('Error fetching countries:', error);
-            // setSnackbar({
-            //     open: true,
-            //     message: 'An error occurred while fetching countries',
-            //     severity: 'error'
-            // });
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const fetchDivisions = async () => {
+        setLoading(true);
+
+        try {
+            const result = await locationService.getDivisionsByCountry(countryId, page, pageSize);
+
+            const { success, response } = result;
+            console.log("result", response);
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data ? data.map(division => ({
+                    id: division.id,
+                    name: division.name,
+                })) : [];
+                setDivisions(formattedData);
+                setTotalItems(total);
+
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
         } finally {
             setLoading(false);
         }
@@ -67,6 +87,12 @@ const ImageTextOverlay = ({
     useEffect(() => {
         fetchCountries();
     }, [page, pageSize]);
+
+    useEffect(() => {
+        if (countryId) {
+            fetchDivisions();
+        }
+    }, [countryId]);
 
     return (
         <Box
@@ -129,7 +155,11 @@ const ImageTextOverlay = ({
 
                 <PropertySearchForm
                     countries={countries}
+                    countryId={countryId}
+                    setCountryId={setCountryId}
                     divisions={divisions}
+                    divisionId={divisionId}
+                    setDivisionId={setDivisionId}
                     districts={districts}
                     propertyTypes={propertyTypes}
                 />

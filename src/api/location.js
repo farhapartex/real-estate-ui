@@ -25,7 +25,7 @@ export const locationService = {
             const response = await publicApiClient.get(`/countries/${countryId}/divisions`, {
                 params: { page, page_size: pageSize }
             });
-            return response.data;
+            return { success: true, response: response.data };
         } catch (error) {
             console.error(`Error fetching divisions for country ${countryId}:`, error);
             throw error;

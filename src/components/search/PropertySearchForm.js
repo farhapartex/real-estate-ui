@@ -22,7 +22,11 @@ import {
 
 const PropertySearchForm = ({
     countries,
-    divisions = ['Division 1', 'Division 2', 'Division 3'],
+    countryId,
+    setCountryId,
+    divisions,
+    divisionId,
+    setDivisionId,
     districts = ['District 1', 'District 2', 'District 3'],
     propertyTypes = ['Apartment', 'House', 'Condo', 'Townhouse', 'Villa']
 }) => {
@@ -155,8 +159,10 @@ const PropertySearchForm = ({
                                 <InputLabel>Country</InputLabel>
                                 <Select
                                     name="country"
-                                    value={formValues.country}
-                                    onChange={handleChange}
+                                    value={countryId}
+                                    onChange={(event) => {
+                                        setCountryId(parseInt(event.target.value));
+                                    }}
                                     label="Country"
                                 >
                                     <MenuItem value="">
@@ -176,16 +182,18 @@ const PropertySearchForm = ({
                                 <InputLabel>Division</InputLabel>
                                 <Select
                                     name="division"
-                                    value={formValues.division}
-                                    onChange={handleChange}
+                                    value={divisionId}
+                                    onChange={(event) => {
+                                        setDivisionId(event.target.value);
+                                    }}
                                     label="Division"
                                 >
                                     <MenuItem value="">
                                         <em>Any</em>
                                     </MenuItem>
                                     {divisions.map((division) => (
-                                        <MenuItem key={division} value={division}>
-                                            {division}
+                                        <MenuItem key={division.id} value={division.id}>
+                                            {division.name}
                                         </MenuItem>
                                     ))}
                                 </Select>

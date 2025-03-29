@@ -66,7 +66,7 @@ const UsersTable = ({
                                         <Box display="flex" alignItems="center">
                                             <Avatar sx={{
                                                 mr: 2, bgcolor: user.type === 'admin' ? 'primary.main' :
-                                                    user.type === 'landlord' ? 'warning.main' : 'success.main'
+                                                    user.type === 'owner' ? 'warning.main' : 'success.main'
                                             }}>
                                                 {user.name.charAt(0)}
                                             </Avatar>
@@ -80,7 +80,7 @@ const UsersTable = ({
                                         </Typography>
                                         <Typography variant="body2" display="flex" alignItems="center" gap={0.5}>
                                             <PhoneIcon fontSize="small" color="action" />
-                                            {user.phone}
+                                            {user.phone || 'N/A'}
                                         </Typography>
                                     </TableCell>
                                     <TableCell>
@@ -89,7 +89,7 @@ const UsersTable = ({
                                             label={user.type.charAt(0).toUpperCase() + user.type.slice(1)}
                                             size="small"
                                             color={user.type === 'admin' ? 'primary' :
-                                                user.type === 'landlord' ? 'warning' : 'success'}
+                                                user.type === 'owner' ? 'warning' : 'success'}
                                             variant="outlined"
                                         />
                                     </TableCell>

@@ -16,6 +16,7 @@ import UsersTable from '../../components/admin/UsersTable';
 import UserDetailsDialog from '../../components/admin/UserDetailsDialog';
 import AdminLayout from '../../layouts/AdminLayout';
 import { mockUsers } from "../../mockUsers";
+import { userService } from '../../api/user';
 
 
 const UserManagement = () => {
@@ -23,6 +24,7 @@ const UserManagement = () => {
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [totalItems, setTotalItems] = useState(0);
     const [searchTerm, setSearchTerm] = useState('');
     const [typeFilter, setTypeFilter] = useState('all');
     const [statusFilter, setStatusFilter] = useState('all');
@@ -36,14 +38,58 @@ const UserManagement = () => {
         severity: 'success'
     });
 
+
+    const fetchAdminUsers = async (page, pageSize) => {
+        try {
+            const result = await userService.adminUserList(page, pageSize);
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                setLoading(false);
+                const formattedData = data.map(user => ({
+                    id: user.id,
+                    name: `${user.first_name} ${user.last_name}`,
+                    email: user.email,
+                    phone: user.phone_number,
+                    type: user.role,
+                    verified: user.email_verified,
+                    isSuperUser: user.is_superuser,
+                    status: user.status,
+                    registrationDate: user.joined_at,
+                    lastActive: user.last_login_at,
+                }));
+                setUsers(formattedData);
+                setTotalItems(total);
+
+            } else {
+                setLoading(false);
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to fetch users',
+                    severity: 'error'
+                });
+            }
+
+        }
+        catch (error) {
+            setSnackbar({
+                open: true,
+                message: 'Failed to fetch users',
+                severity: 'error'
+            });
+        }
+    }
+
     useEffect(() => {
         // Simulate API call
         setLoading(true);
-        setTimeout(() => {
-            setUsers(mockUsers);
-            setFilteredUsers(mockUsers);
-            setLoading(false);
-        }, 1000);
+        fetchAdminUsers(1, 10);
+        // setTimeout(() => {
+        //     setUsers(mockUsers);
+        //     setFilteredUsers(mockUsers);
+        //     setLoading(false);
+        // }, 1000);
     }, []);
 
     useEffect(() => {

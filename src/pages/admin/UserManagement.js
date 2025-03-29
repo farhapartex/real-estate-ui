@@ -61,18 +61,22 @@ const UserManagement = () => {
             const { data, rpage, rpageSize, total } = response;
 
             if (success) {
-                const formattedData = data.map(user => ({
-                    id: user.id,
-                    name: `${user.first_name} ${user.last_name}`,
-                    email: user.email,
-                    phone: user.phone_number,
-                    type: user.role,
-                    verified: user.email_verified,
-                    isSuperUser: user.is_superuser,
-                    status: user.status,
-                    registrationDate: user.joined_at,
-                    lastActive: user.last_login_at,
-                }));
+                let formattedData = [];
+                if (data) {
+                    formattedData = data.map(user => ({
+                        id: user.id,
+                        name: `${user.first_name} ${user.last_name}`,
+                        email: user.email,
+                        phone: user.phone_number,
+                        type: user.role,
+                        verified: user.email_verified,
+                        isSuperUser: user.is_superuser,
+                        status: user.status,
+                        registrationDate: user.joined_at,
+                        lastActive: user.last_login_at,
+                    }));
+                }
+
                 setUsers(formattedData);
                 setFilteredUsers(formattedData);
                 setTotalItems(total);

@@ -110,8 +110,8 @@ const UsersTable = ({
                                             />
                                         )}
                                     </TableCell>
-                                    <TableCell>{formatDate(user.registrationDate)}</TableCell>
-                                    <TableCell>{formatDate(user.lastActive)}</TableCell>
+                                    <TableCell>{user.registrationDate ? formatDate(user.registrationDate) : "N/A"}</TableCell>
+                                    <TableCell>{user.lastActive ? formatDate(user.lastActive) : "N/A"}</TableCell>
                                     <TableCell align="center">
                                         <Box display="flex" justifyContent="center" gap={1}>
                                             <Tooltip title="View User Details">

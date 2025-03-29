@@ -25,10 +25,10 @@ const UserManagement = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [totalItems, setTotalItems] = useState(0);
-    const [searchTerm, setSearchTerm] = useState('');
-    const [typeFilter, setTypeFilter] = useState('all');
-    const [statusFilter, setStatusFilter] = useState('all');
-    const [verificationFilter, setVerificationFilter] = useState('all');
+    // const [searchTerm, setSearchTerm] = useState('');
+    // const [typeFilter, setTypeFilter] = useState('all');
+    // const [statusFilter, setStatusFilter] = useState('all');
+    // const [verificationFilter, setVerificationFilter] = useState('all');
     const [loading, setLoading] = useState(true);
     const [selectedUser, setSelectedUser] = useState(null);
     const [openDialog, setOpenDialog] = useState(false);
@@ -38,15 +38,29 @@ const UserManagement = () => {
         severity: 'success'
     });
 
+    // local filters
+    const [searchTerm, setSearchTerm] = useState('');
+    const [typeFilter, setTypeFilter] = useState('all');
+    const [statusFilter, setStatusFilter] = useState('all');
+    const [verificationFilter, setVerificationFilter] = useState('all');
+    const [apiFilters, setApiFilters] = useState({
+        role: '',
+        status: '',
+        emailVerified: undefined,
+        search: '',
+        sortBy: 'first_name',
+        sortOrder: 'asc'
+    });
+    const [shouldFetchData, setShouldFetchData] = useState(true);
 
-    const fetchAdminUsers = async (page, pageSize) => {
+
+    const fetchAdminUsers = async () => {
         try {
-            const result = await userService.adminUserList(page, pageSize);
+            const result = await userService.adminUserList(page, rowsPerPage, apiFilters);
             const { success, response } = result;
             const { data, rpage, rpageSize, total } = response;
 
             if (success) {
-                setLoading(false);
                 const formattedData = data.map(user => ({
                     id: user.id,
                     name: `${user.first_name} ${user.last_name}`,
@@ -60,10 +74,11 @@ const UserManagement = () => {
                     lastActive: user.last_login_at,
                 }));
                 setUsers(formattedData);
+                setFilteredUsers(formattedData);
                 setTotalItems(total);
 
             } else {
-                setLoading(false);
+
                 setSnackbar({
                     open: true,
                     message: 'Failed to fetch users',
@@ -78,55 +93,72 @@ const UserManagement = () => {
                 message: 'Failed to fetch users',
                 severity: 'error'
             });
+        } finally {
+            setLoading(false);
+            setShouldFetchData(false);
         }
     }
 
     useEffect(() => {
         // Simulate API call
         setLoading(true);
-        fetchAdminUsers(1, 10);
-        // setTimeout(() => {
-        //     setUsers(mockUsers);
-        //     setFilteredUsers(mockUsers);
-        //     setLoading(false);
-        // }, 1000);
+        fetchAdminUsers();
     }, []);
 
     useEffect(() => {
         applyFilters();
-    }, [searchTerm, typeFilter, statusFilter, verificationFilter, users]);
+    }, [searchTerm, typeFilter, statusFilter, verificationFilter]);
+
+    useEffect(() => {
+        if (shouldFetchData) {
+            fetchAdminUsers();
+        }
+    }, [shouldFetchData, page, rowsPerPage, apiFilters]);
 
     const applyFilters = () => {
         let filtered = [...users];
+        let newFilters = { ...apiFilters };
+        let hasChanges = false;
 
         // Search term
         if (searchTerm) {
             const term = searchTerm.toLowerCase();
-            filtered = filtered.filter(user =>
-                user.name.toLowerCase().includes(term) ||
-                user.email.toLowerCase().includes(term) ||
-                user.phone.toLowerCase().includes(term)
-            );
+            newFilters.search = searchTerm.toLowerCase();
+            hasChanges = true;
+        } else if (!searchTerm && apiFilters.search) {
+            newFilters.search = '';
+            hasChanges = true;
         }
 
-        // Type filter
         if (typeFilter !== 'all') {
-            filtered = filtered.filter(user => user.type === typeFilter);
+            newFilters.role = typeFilter;
+            hasChanges = true;
+        } else if (typeFilter === 'all' && apiFilters.role) {
+            newFilters.role = '';
+            hasChanges = true;
         }
 
-        // Status filter
-        if (statusFilter !== 'all') {
-            filtered = filtered.filter(user => user.status === statusFilter);
+        if (statusFilter !== 'all' && statusFilter !== apiFilters.status) {
+            newFilters.status = statusFilter;
+            hasChanges = true;
+        } else if (statusFilter === 'all' && apiFilters.status) {
+            newFilters.status = '';
+            hasChanges = true;
+        }
+        const newVerificationValue = verificationFilter === 'all'
+            ? undefined
+            : (verificationFilter === 'verified');
+
+        if (newVerificationValue !== apiFilters.emailVerified) {
+            newFilters.emailVerified = newVerificationValue;
+            hasChanges = true;
         }
 
-        // Verification filter
-        if (verificationFilter !== 'all') {
-            const isVerified = verificationFilter === 'verified';
-            filtered = filtered.filter(user => user.verified === isVerified);
+        if (hasChanges) {
+            setApiFilters(newFilters);
+            setPage(0); // Reset to first page
+            setShouldFetchData(true); // This will trigger the API call
         }
-
-        setFilteredUsers(filtered);
-        setPage(0); // Reset to first page when filters are applied
     };
 
     const handleResetFilters = () => {
@@ -134,25 +166,32 @@ const UserManagement = () => {
         setTypeFilter('all');
         setStatusFilter('all');
         setVerificationFilter('all');
+
+        setApiFilters({
+            role: '',
+            status: '',
+            emailVerified: undefined,
+            search: '',
+            sortBy: 'first_name',
+            sortOrder: 'asc'
+        });
+        setPage(0);
+        setShouldFetchData(true);
     };
 
     const handleRefresh = () => {
-        setLoading(true);
-        // In a real application, this would fetch fresh data from the API
-        setTimeout(() => {
-            setUsers(mockUsers);
-            setFilteredUsers(mockUsers);
-            setLoading(false);
-        }, 1000);
+        setShouldFetchData(true);
     };
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+        setShouldFetchData(true);
     };
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
+        setShouldFetchData(true);
     };
 
     const handleOpenUserDetails = (user) => {

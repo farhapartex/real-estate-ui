@@ -67,7 +67,7 @@ const UserFilters = ({
                         >
                             <MenuItem value="all">All Types</MenuItem>
                             <MenuItem value="admin">Admin</MenuItem>
-                            <MenuItem value="landlord">Landlord</MenuItem>
+                            <MenuItem value="owner">Landlord</MenuItem>
                             <MenuItem value="renter">Renter</MenuItem>
                         </Select>
                     </FormControl>

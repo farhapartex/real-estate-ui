@@ -1,6 +1,20 @@
 import { apiClient } from "./baseAPI";
 
 export const authService = {
+    signup: async (payload) => {
+        try {
+            const response = await apiClient.post('/auth/signup', payload);
+            const data = response.data;
+
+            return { success: true, data: data };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Signup failed. Please try again.',
+                data: null,
+            };
+        }
+    },
     login: async (email, password) => {
         try {
             const response = await apiClient.post('/auth/token', { email, password });
@@ -12,8 +26,8 @@ export const authService = {
             if (userResponse.success) {
                 return { success: true, user: userResponse.user };
             } else {
-                localStorage.remove("token");
-                localStorage.remove("refreshToken");
+                localStorage.removeItem("token");
+                localStorage.removeItem("refreshToken");
                 return { success: false, user: null, error: 'Error to fetch user data.' };
             }
         } catch (error) {
@@ -26,8 +40,8 @@ export const authService = {
     },
 
     logout: async () => {
-        localStorage.remove("token");
-        localStorage.remove("refreshToken");
+        localStorage.removeItem("token");
+        localStorage.removeItem("refreshToken");
     },
 
     me: async () => {

@@ -26,6 +26,7 @@ import BlogCreate from './pages/admin/BlogCreate';
 import BlogEditPage from './pages/admin/BlogEdit';
 import ProtectedRoute from './components/ProtectedRoute';
 import { AuthProvider } from './context/AuthContext';
+import EmailVerification from './pages/verifications/EmailVerification';
 
 const root = document.getElementById("root");
 
@@ -36,6 +37,7 @@ ReactDOM.createRoot(root).render(
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/email-verification" element={<EmailVerification />} />
         <Route path="/terms-and-conditions" element={<TermsConditionsPage />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/blogs" element={<BlogListPage />} />

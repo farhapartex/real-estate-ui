@@ -15,6 +15,20 @@ export const authService = {
             };
         }
     },
+    emailVerification: async (payload) => {
+        try {
+            const response = await apiClient.post('/auth/verify', payload);
+            const data = response.data;
+
+            return { success: true, data: data };
+        } catch (error) {
+            return {
+                success: false,
+                error: error.response?.data?.message || 'Email verification failed. Please try again.',
+                data: null,
+            };
+        }
+    },
     login: async (email, password) => {
         try {
             const response = await apiClient.post('/auth/token', { email, password });

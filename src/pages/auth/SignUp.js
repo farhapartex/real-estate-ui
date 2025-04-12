@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link as RouterLink } from 'react-router';
+import { Link as RouterLink, useNavigate } from 'react-router';
 import {
     Box,
     TextField,
@@ -42,6 +42,8 @@ const SignupPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [apiError, setApiError] = useState('');
     const [signupSuccess, setSignupSuccess] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value, checked } = e.target;
@@ -124,7 +126,9 @@ const SignupPage = () => {
             try {
                 const result = await authService.signup(payload);
                 if (result.success) {
+                    const data = result.data;
                     setSignupSuccess(true);
+                    navigate(`/email-verification?token=${data?.token}`);
                 } else {
                     setApiError(result.message || 'Registration failed. Please try again.');
                 }

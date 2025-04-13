@@ -63,7 +63,7 @@ const PropertyBasicInfoForm = ({
                     disabled={!isEditMode}
                     required
                     InputProps={{
-                        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                        startAdornment: <InputAdornment position="start">৳</InputAdornment>,
                         endAdornment: property.purpose === 'rent' ? (
                             <InputAdornment position="end">/month</InputAdornment>
                         ) : null
@@ -178,7 +178,7 @@ const PropertyBasicInfoForm = ({
                         disabled={!isEditMode}
                     >
                         {countries.map(country => (
-                            <MenuItem key={country} value={country}>{country}</MenuItem>
+                            <MenuItem key={country.id} value={country.id}>{country?.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -196,7 +196,7 @@ const PropertyBasicInfoForm = ({
                         disabled={!property.country || !isEditMode}
                     >
                         {divisions.map(division => (
-                            <MenuItem key={division} value={division}>{division}</MenuItem>
+                            <MenuItem key={division.id} value={division.id}>{division?.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>
@@ -214,7 +214,7 @@ const PropertyBasicInfoForm = ({
                         disabled={!property.division || !isEditMode}
                     >
                         {districts.map(district => (
-                            <MenuItem key={district} value={district}>{district}</MenuItem>
+                            <MenuItem key={district.id} value={district.id}>{district?.name}</MenuItem>
                         ))}
                     </Select>
                 </FormControl>

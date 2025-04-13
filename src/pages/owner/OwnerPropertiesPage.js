@@ -263,7 +263,7 @@ const OwnerPropertiesPage = () => {
     const formatPrice = (price, purpose) => {
         return new Intl.NumberFormat('en-US', {
             style: 'currency',
-            currency: 'USD',
+            currency: 'BDT',
             maximumFractionDigits: 0
         }).format(price) + (purpose === 'rent' ? '/month' : '');
     };
@@ -408,16 +408,6 @@ const OwnerPropertiesPage = () => {
                         </Grid>
                     </Grid>
                 </Paper>
-
-                {/* Tabs */}
-                {/* <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
-                    <Tabs value={tabValue} onChange={handleTabChange} aria-label="property status tabs">
-                        <Tab label="All Properties" />
-                        <Tab label="Active" />
-                        <Tab label="Pending Approval" />
-                        <Tab label="Drafts" />
-                    </Tabs>
-                </Box> */}
 
                 {/* Property Cards */}
                 {filteredProperties.length > 0 ? (

@@ -24,6 +24,7 @@ import {
     ArrowBack as ArrowBackIcon,
     NavigateNext as NavigateNextIcon
 } from '@mui/icons-material';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import { Link as RouterLink } from 'react-router';
 
 // Import mock data (in a real app, this would be fetched from an API)
@@ -34,6 +35,7 @@ import PropertyBasicInfoTab from '../../components/owner/PropertyBasicInfoTab';
 import PropertyBasicInfoForm from '../../components/owner/PropertyBasicInfoTab';
 import PropertyFeaturesForm from '../../components/owner/PropertyFeaturesTab';
 import PropertyPhotosForm from '../../components/owner/PropertyPhotosForm';
+import { locationService } from '../../api/location';
 
 // These would typically be imported from separate files
 const PropertyBasicInfoTabUI = ({ property, isEditMode, handleChange }) => (
@@ -94,14 +96,104 @@ const PropertyEditViewPage = () => {
     // UI state
     const [tabValue, setTabValue] = useState(0);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [divisions, setDivisions] = useState([]);
-    const [districts, setDistricts] = useState([]);
     const [featureInput, setFeatureInput] = useState('');
     const [snackbar, setSnackbar] = useState({
         open: false,
         message: '',
         severity: 'success'
     });
+    const [countries, setCountries] = useState([]);
+    const [countryId, setCountryId] = useState(null);
+    const [divisions, setDivisions] = useState([]);
+    const [districts, setDistricts] = useState([]);
+    const [divisionId, setDivisionId] = useState(null);
+    const [districtId, setDistrictId] = useState(null);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+
+    const fetchCountries = async () => {
+        try {
+            const result = await locationService.getPublicCountries(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                const formattedData = data.map(country => ({
+                    id: country.id,
+                    name: country.name,
+                    code: country.code
+                }));
+                setCountries(formattedData);
+
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        } finally {
+        }
+    }
+
+    const fetchDivisions = async () => {
+
+        try {
+            const result = await locationService.getDivisionsByCountry(countryId, page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                const formattedData = data ? data.map(division => ({
+                    id: division.id,
+                    name: division.name,
+                })) : [];
+                setDivisions(formattedData);
+
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        } finally {
+            setDistricts([]); // Reset districts when country changes
+            setDivisionId(null); // Reset division ID when country changes
+        }
+    }
+
+    const fetchDistrics = async () => {
+
+        try {
+            const result = await locationService.getDistrictByDivision(divisionId, page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                const formattedData = data ? data.map(district => ({
+                    id: district.id,
+                    name: district.name,
+                })) : [];
+                setDistricts(formattedData);
+
+            }
+        } catch (error) {
+            console.error('Error fetching districts:', error);
+        } finally {
+        }
+    }
+
+    useEffect(() => {
+        fetchCountries();
+    }, [page, pageSize]);
+
+    useEffect(() => {
+        if (countryId) {
+            fetchDivisions();
+        }
+    }, [countryId]);
+
+    useEffect(() => {
+        if (divisionId) {
+            fetchDistrics();
+        }
+    }, [divisionId]);
 
     // Effect to update divisions when country changes
     useEffect(() => {
@@ -145,6 +237,13 @@ const PropertyEditViewPage = () => {
     // Handle input change
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+        if (name == 'division') {
+            setDivisionId(value);
+        } else if (name == 'district') {
+            setDistrictId(value);
+        } else if (name == 'country') {
+            setCountryId(value);
+        }
         setProperty(prev => ({
             ...prev,
             [name]: value
@@ -280,6 +379,13 @@ const PropertyEditViewPage = () => {
     // Handle save
     const handleSave = () => {
         // In a real app, you would save to a database
+        if (tabValue === 0) {
+            setTabValue(1);
+            return;
+        } else if (tabValue === 1) {
+            setTabValue(2);
+            return;
+        }
         console.log('Saving property:', property);
         setSnackbar({
             open: true,
@@ -468,10 +574,11 @@ const PropertyEditViewPage = () => {
 
                             <Button
                                 variant="contained"
-                                startIcon={<SaveIcon />}
+                                startIcon={tabValue == 2 ? <SaveIcon /> : null}
+                                endIcon={tabValue < 2 ? <KeyboardArrowRightIcon /> : null}
                                 onClick={handleSave}
                             >
-                                {isNewProperty ? 'Create Property' : 'Save Changes'}
+                                {isNewProperty ? tabValue < 2 ? 'Next' : 'Create Property' : 'Save Changes'}
                             </Button>
                         </Box>
                     </Box>

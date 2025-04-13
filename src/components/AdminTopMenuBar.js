@@ -16,6 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router';
+import { useAuth } from '../context/AuthContext';
 
 const pages = ['Website', 'Dashboard', 'Location', 'User Management', 'Property', 'Blog'];
 const settings = ['Profile', 'Dashboard', 'Logout'];
@@ -41,6 +42,8 @@ function AdminTopAppBar() {
     const [anchorElUser, setAnchorElUser] = React.useState(null);
     const navigate = useNavigate();
 
+    const { user, isAuthenticated, loading, logout, hasRole } = useAuth();
+
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -56,9 +59,13 @@ function AdminTopAppBar() {
         setAnchorElUser(null);
     };
 
-    const handleMenuItemClick = (path) => {
+    const handleMenuItemClick = (setting) => {
         handleCloseUserMenu(); // Close the menu
-        navigate(path); // Navigate to the path
+        if (setting === 'Logout') {
+            logout();
+        } else {
+            navigate(settingsPageLinks[setting])
+        }
     };
 
     return (
@@ -175,7 +182,7 @@ function AdminTopAppBar() {
                             {settings.map((setting) => (
                                 <MenuItem
                                     key={setting}
-                                    onClick={() => handleMenuItemClick(settingsPageLinks[setting])}
+                                    onClick={() => handleMenuItemClick(setting)}
                                 >
                                     <Typography sx={{ textAlign: 'center', color: '#000', }}>{setting}</Typography>
                                 </MenuItem>

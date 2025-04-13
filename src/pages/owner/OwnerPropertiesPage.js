@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router';
 import {
     Box,
@@ -40,6 +40,7 @@ import {
 } from '@mui/icons-material';
 import { Link as RouterLink } from 'react-router';
 import RootLayout from '../../layouts/RootLayout';
+import { propertyService } from '../../api/property';
 
 // Sample property data - in a real app, this would come from an API
 const mockProperties = [
@@ -149,6 +150,57 @@ const OwnerPropertiesPage = () => {
     const [purposeFilter, setPurposeFilter] = useState('all');
     const [menuAnchorEl, setMenuAnchorEl] = useState(null);
     const [selectedPropertyId, setSelectedPropertyId] = useState(null);
+    const [properties, setProperties] = useState([]);
+    const [filteredProperties, setFilteredProperties] = useState([]);
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalItems, setTotalItems] = useState(0);
+    const [snackbar, setSnackbar] = useState({
+        open: false,
+        message: '',
+        severity: 'success'
+    });
+
+    const fetchProperties = async () => {
+        //setLoading(true);
+
+        try {
+            const result = await propertyService.ownerPropertyList(page, pageSize);
+
+            const { success, response } = result;
+            const { data, rpage, rpageSize, total } = response;
+
+            if (success) {
+                //setLoading(false);
+                // const formattedData = data.map(country => ({
+                //     id: country.id,
+                //     name: country.name,
+                //     code: country.code,
+                //     status: country.status,
+                //     divisions: country.divisions
+                // }));
+                console.log("data: ", data);
+                setProperties(data);
+                setTotalItems(total);
+
+            } else {
+                setSnackbar({
+                    open: true,
+                    message: 'Failed to fetch countries',
+                    severity: 'error'
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+            setSnackbar({
+                open: true,
+                message: 'An error occurred while fetching countries',
+                severity: 'error'
+            });
+        } finally {
+            //setLoading(false);
+        }
+    }
 
     // Handle tab change
     const handleTabChange = (event, newValue) => {
@@ -218,11 +270,11 @@ const OwnerPropertiesPage = () => {
 
     // Filter properties based on tab, search term, and filters
     const getFilteredProperties = () => {
-        return mockProperties.filter(property => {
+        return properties.filter(property => {
             // Filter by tab (status)
-            if (tabValue === 1 && property.status !== 'Active') return false;
-            if (tabValue === 2 && property.status !== 'Pending Approval') return false;
-            if (tabValue === 3 && property.status !== 'Draft') return false;
+            //if (tabValue === 1 && property.status !== 'active') return false;
+            //if (tabValue === 2 && property.status !== 'pending') return false;
+            //if (tabValue === 3 && property.status !== 'draft') return false;
 
             // Filter by search term
             if (searchTerm && !property.title.toLowerCase().includes(searchTerm.toLowerCase())) return false;
@@ -238,9 +290,24 @@ const OwnerPropertiesPage = () => {
 
             return true;
         });
+
+        //return properties;
     };
 
-    const filteredProperties = getFilteredProperties();
+
+    useEffect(() => {
+        fetchProperties();
+
+        console.log("filteredProperties: ", filteredProperties);
+    }, [page, pageSize]);
+
+
+    useEffect(() => {
+        const filtered = getFilteredProperties();
+        setFilteredProperties(filtered);
+    }, [properties, searchTerm, statusFilter, typeFilter, purposeFilter, tabValue]);
+
+    //const filteredProperties = getFilteredProperties();
 
     return (
         <RootLayout>
@@ -302,9 +369,9 @@ const OwnerPropertiesPage = () => {
                                     label="Status"
                                 >
                                     <MenuItem value="all">All Statuses</MenuItem>
-                                    <MenuItem value="Active">Active</MenuItem>
-                                    <MenuItem value="Pending Approval">Pending Approval</MenuItem>
-                                    <MenuItem value="Draft">Draft</MenuItem>
+                                    <MenuItem value="active">Active</MenuItem>
+                                    <MenuItem value="pending">Pending Approval</MenuItem>
+                                    <MenuItem value="draft">Draft</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
@@ -343,14 +410,14 @@ const OwnerPropertiesPage = () => {
                 </Paper>
 
                 {/* Tabs */}
-                <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+                {/* <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
                     <Tabs value={tabValue} onChange={handleTabChange} aria-label="property status tabs">
                         <Tab label="All Properties" />
                         <Tab label="Active" />
                         <Tab label="Pending Approval" />
                         <Tab label="Drafts" />
                     </Tabs>
-                </Box>
+                </Box> */}
 
                 {/* Property Cards */}
                 {filteredProperties.length > 0 ? (
@@ -375,7 +442,7 @@ const OwnerPropertiesPage = () => {
                                         <CardMedia
                                             component="img"
                                             height="200"
-                                            image={property.images[0]}
+                                            image={'https://images.unsplash.com/photo-1505691723518-36a5ac3be353'}
                                             alt={property.title}
                                         />
                                         <Box
@@ -396,9 +463,9 @@ const OwnerPropertiesPage = () => {
                                         <Chip
                                             label={property.status}
                                             color={
-                                                property.status === 'Active'
+                                                property.status === 'active'
                                                     ? 'success'
-                                                    : property.status === 'Pending Approval'
+                                                    : property.status === 'pending'
                                                         ? 'warning'
                                                         : 'default'
                                             }
@@ -416,11 +483,11 @@ const OwnerPropertiesPage = () => {
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" sx={{ mb: 1, display: 'flex', alignItems: 'center' }}>
                                             <LocationOnIcon fontSize="small" sx={{ mr: 0.5 }} />
-                                            {property.location}, {property.district}
+                                            {property?.address}, {property.district?.name}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2, display: 'flex', alignItems: 'center' }}>
                                             <HomeWorkIcon fontSize="small" sx={{ mr: 0.5 }} />
-                                            {property.propertyType}
+                                            {property.property_type}
                                         </Typography>
                                         <Typography variant="h6" color="primary.main" sx={{ fontWeight: 'bold' }}>
                                             {formatPrice(property.price, property.purpose)}
@@ -435,17 +502,17 @@ const OwnerPropertiesPage = () => {
                                     <Divider />
                                     <CardActions sx={{ justifyContent: 'space-between', px: 2 }}>
                                         <Typography variant="body2" color="text.secondary">
-                                            Added: {formatDate(property.createdAt)}
+                                            Added: {formatDate(property?.created_at)}
                                         </Typography>
                                         <Box>
                                             <Chip
-                                                label={`${property.views} views`}
+                                                label={`${property?.views} views`}
                                                 size="small"
                                                 variant="outlined"
                                                 sx={{ mr: 1 }}
                                             />
                                             <Chip
-                                                label={`${property.inquiries} inquiries`}
+                                                label={`${property?.inquiries} inquiries`}
                                                 size="small"
                                                 variant="outlined"
                                                 color="primary"

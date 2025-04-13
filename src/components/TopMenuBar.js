@@ -65,7 +65,6 @@ function ResponsiveTopAppBar() {
 
     const handleMenuItemClick = (setting) => {
         handleCloseUserMenu();
-        console.log('Clicked on:', setting);
         if (setting === 'Logout') {
             // Call the logout function from auth context
             logout();

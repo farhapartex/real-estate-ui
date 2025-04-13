@@ -80,16 +80,75 @@ const PropertyEditViewPage = () => {
         amenities: {
             airConditioning: false,
             heating: false,
-            parking: 0,
             furnished: false,
             petsAllowed: false,
             washerDryer: false,
+            inUnitLaundry: false,
             elevator: false,
-            securitySystem: false,
+            outdoorSpace: false,
+            balcony: false,
+            disabilityAccess: false,
+            hardwoodFloors: false,
             fireplace: false,
             pool: false,
             gym: false,
-            outdoorSpace: false
+            parking: 0,
+            garages: 0,
+            ceilingHeight: 0,
+            lotSize: 0
+
+        },
+        securityFeature: {
+            securitySystem: false,
+            doorman: false,
+            securityCamera: false,
+            gatedCommunity: false,
+            fireAlarm: false,
+        },
+        technologyFeature: {
+            internetWifi: false,
+            smartHome: false,
+            dishwasher: false,
+            garbageDisposal: false,
+            cableTV: false,
+            refrigerator: false,
+            microwave: false,
+            stoveOven: false,
+            ceilingFans: false,
+        },
+        luxaryFeature: {
+            fireplace: false,
+            pool: false,
+            gym: false,
+            walkInClosets: false,
+            jacuzzi: false,
+            sauna: false
+        },
+        communityFeature: {
+            concierge: false,
+            businessCenter: false,
+            conferenceRoom: false,
+            guestParking: false,
+            playground: false,
+            bbqArea: false,
+            communityGarden: false,
+            tennisCourt: false, basketballCourt: false,
+            basketballCourt: false,
+        },
+        utilsFeature: {
+            waterIncluded: false,
+            gasIncluded: false,
+            electricityIncluded: false,
+            trashRemocalIncluded: false,
+            internetIncluded: false,
+        },
+        energyFeature: {
+            solarPanels: false,
+            energyEfficientAppliances: false,
+            greenCertification: false,
+            evCharging: false,
+            rainwaterHarvesting: false,
+            programmableThermostat: false,
         }
     } : mockProperty);
 
@@ -295,6 +354,48 @@ const PropertyEditViewPage = () => {
                 amenities: {
                     ...prev.amenities,
                     parking: value
+                }
+            }));
+        }
+    };
+
+    const handleGarageChange = (e) => {
+        const { value } = e.target;
+        // Only allow numbers or empty string
+        if (value === '' || /^\d+$/.test(value)) {
+            setProperty(prev => ({
+                ...prev,
+                amenities: {
+                    ...prev.amenities,
+                    garages: value
+                }
+            }));
+        }
+    };
+
+    const handleCeilingHeightChange = (e) => {
+        const { value } = e.target;
+        // Only allow numbers or empty string
+        if (value === '' || /^\d+$/.test(value)) {
+            setProperty(prev => ({
+                ...prev,
+                amenities: {
+                    ...prev.amenities,
+                    ceilingHeight: value
+                }
+            }));
+        }
+    };
+
+    const handleLotSizeChange = (e) => {
+        const { value } = e.target;
+        // Only allow numbers or empty string
+        if (value === '' || /^\d+$/.test(value)) {
+            setProperty(prev => ({
+                ...prev,
+                amenities: {
+                    ...prev.amenities,
+                    lotSize: value
                 }
             }));
         }
@@ -534,6 +635,9 @@ const PropertyEditViewPage = () => {
                             handleRemoveFeature={handleRemoveFeature}
                             handleAmenityChange={handleAmenityChange}
                             handleParkingChange={handleParkingChange}
+                            handleGarageChange={handleGarageChange}
+                            handleCeilingHeightChange={handleCeilingHeightChange}
+                            handleLotSizeChange={handleLotSizeChange}
                             isEditMode={isEditMode}
                         />
                     )}

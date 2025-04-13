@@ -24,6 +24,9 @@ const PropertyFeaturesForm = ({
     handleRemoveFeature,
     handleAmenityChange,
     handleParkingChange,
+    handleGarageChange,
+    handleCeilingHeightChange,
+    handleLotSizeChange,
     handleNumberChange,
     isEditMode
 }) => {
@@ -226,9 +229,9 @@ const PropertyFeaturesForm = ({
                             <TextField
                                 fullWidth
                                 label="Parking Spots"
-                                value={property.amenities.parking || ''}
+                                value={property.amenities.parking || 0}
                                 onChange={handleParkingChange}
-                                type="text"
+                                type="number"
                                 inputProps={{ inputMode: 'numeric' }}
                                 disabled={!isEditMode}
                             />
@@ -238,9 +241,9 @@ const PropertyFeaturesForm = ({
                                 fullWidth
                                 label="Number of Garages"
                                 name="garages"
-                                value={property.amenities.garages || ''}
-                                onChange={handleNumberChange}
-                                type="text"
+                                value={property.amenities.garages || 0}
+                                onChange={handleGarageChange}
+                                type="number"
                                 inputProps={{ inputMode: 'numeric' }}
                                 disabled={!isEditMode}
                             />
@@ -250,9 +253,9 @@ const PropertyFeaturesForm = ({
                                 fullWidth
                                 label="Ceiling Height (ft)"
                                 name="ceilingHeight"
-                                value={property.amenities.ceilingHeight || ''}
-                                onChange={handleNumberChange}
-                                type="text"
+                                value={property.amenities.ceilingHeight || 0}
+                                onChange={handleCeilingHeightChange}
+                                type="number"
                                 inputProps={{ inputMode: 'numeric' }}
                                 disabled={!isEditMode}
                             />
@@ -262,9 +265,9 @@ const PropertyFeaturesForm = ({
                                 fullWidth
                                 label="Lot Size (sq.ft)"
                                 name="lotSize"
-                                value={property.amenities.lotSize || ''}
-                                onChange={handleNumberChange}
-                                type="text"
+                                value={property.amenities.lotSize || 0}
+                                onChange={handleLotSizeChange}
+                                type="number"
                                 inputProps={{ inputMode: 'numeric' }}
                                 disabled={!isEditMode}
                             />
@@ -284,7 +287,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.securitySystem || false}
+                                        checked={property.securityFeature.securitySystem || false}
                                         onChange={handleAmenityChange}
                                         name="securitySystem"
                                         disabled={!isEditMode}
@@ -297,7 +300,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.doorman || false}
+                                        checked={property.securityFeature.doorman || false}
                                         onChange={handleAmenityChange}
                                         name="doorman"
                                         disabled={!isEditMode}
@@ -310,7 +313,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.securityCamera || false}
+                                        checked={property.securityFeature.securityCamera || false}
                                         onChange={handleAmenityChange}
                                         name="securityCamera"
                                         disabled={!isEditMode}
@@ -323,13 +326,26 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.gatedCommunity || false}
+                                        checked={property.securityFeature.gatedCommunity || false}
                                         onChange={handleAmenityChange}
                                         name="gatedCommunity"
                                         disabled={!isEditMode}
                                     />
                                 }
                                 label="Gated Community"
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={6} md={4}>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        checked={property.securityFeature.fireAlarm || false}
+                                        onChange={handleAmenityChange}
+                                        name="gatedCommunity"
+                                        disabled={!isEditMode}
+                                    />
+                                }
+                                label="Fire Alarm"
                             />
                         </Grid>
                     </Grid>
@@ -347,7 +363,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.internetWifi || false}
+                                        checked={property.technologyFeature.internetWifi || false}
                                         onChange={handleAmenityChange}
                                         name="internetWifi"
                                         disabled={!isEditMode}
@@ -360,7 +376,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.smartHome || false}
+                                        checked={property.technologyFeature.smartHome || false}
                                         onChange={handleAmenityChange}
                                         name="smartHome"
                                         disabled={!isEditMode}
@@ -373,7 +389,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.dishwasher || false}
+                                        checked={property.technologyFeature.dishwasher || false}
                                         onChange={handleAmenityChange}
                                         name="dishwasher"
                                         disabled={!isEditMode}
@@ -386,7 +402,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.garbageDisposal || false}
+                                        checked={property.technologyFeature.garbageDisposal || false}
                                         onChange={handleAmenityChange}
                                         name="garbageDisposal"
                                         disabled={!isEditMode}
@@ -399,7 +415,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.refrigerator || false}
+                                        checked={property.technologyFeature.refrigerator || false}
                                         onChange={handleAmenityChange}
                                         name="refrigerator"
                                         disabled={!isEditMode}
@@ -412,7 +428,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.microwave || false}
+                                        checked={property.technologyFeature.microwave || false}
                                         onChange={handleAmenityChange}
                                         name="microwave"
                                         disabled={!isEditMode}
@@ -425,7 +441,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.stoveOven || false}
+                                        checked={property.technologyFeature.stoveOven || false}
                                         onChange={handleAmenityChange}
                                         name="stoveOven"
                                         disabled={!isEditMode}
@@ -438,7 +454,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.cableReady || false}
+                                        checked={property.technologyFeature.cableTV || false}
                                         onChange={handleAmenityChange}
                                         name="cableReady"
                                         disabled={!isEditMode}
@@ -451,7 +467,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.ceilingFans || false}
+                                        checked={property.technologyFeature.ceilingFans || false}
                                         onChange={handleAmenityChange}
                                         name="ceilingFans"
                                         disabled={!isEditMode}
@@ -475,7 +491,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.fireplace || false}
+                                        checked={property.luxaryFeature.fireplace || false}
                                         onChange={handleAmenityChange}
                                         name="fireplace"
                                         disabled={!isEditMode}
@@ -488,7 +504,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.pool || false}
+                                        checked={property.luxaryFeature.pool || false}
                                         onChange={handleAmenityChange}
                                         name="pool"
                                         disabled={!isEditMode}
@@ -501,7 +517,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.gym || false}
+                                        checked={property.luxaryFeature.gym || false}
                                         onChange={handleAmenityChange}
                                         name="gym"
                                         disabled={!isEditMode}
@@ -514,7 +530,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.walkInClosets || false}
+                                        checked={property.luxaryFeature.walkInClosets || false}
                                         onChange={handleAmenityChange}
                                         name="walkInClosets"
                                         disabled={!isEditMode}
@@ -527,7 +543,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.jacuzzi || false}
+                                        checked={property.luxaryFeature.jacuzzi || false}
                                         onChange={handleAmenityChange}
                                         name="jacuzzi"
                                         disabled={!isEditMode}
@@ -540,7 +556,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.sauna || false}
+                                        checked={property.luxaryFeature.sauna || false}
                                         onChange={handleAmenityChange}
                                         name="sauna"
                                         disabled={!isEditMode}
@@ -564,7 +580,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.concierge || false}
+                                        checked={property.communityFeature.concierge || false}
                                         onChange={handleAmenityChange}
                                         name="concierge"
                                         disabled={!isEditMode}
@@ -577,7 +593,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.businessCenter || false}
+                                        checked={property.communityFeature.businessCenter || false}
                                         onChange={handleAmenityChange}
                                         name="businessCenter"
                                         disabled={!isEditMode}
@@ -590,7 +606,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.conferenceRoom || false}
+                                        checked={property.communityFeature.conferenceRoom || false}
                                         onChange={handleAmenityChange}
                                         name="conferenceRoom"
                                         disabled={!isEditMode}
@@ -603,7 +619,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.guestParking || false}
+                                        checked={property.communityFeature.guestParking || false}
                                         onChange={handleAmenityChange}
                                         name="guestParking"
                                         disabled={!isEditMode}
@@ -616,7 +632,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.playground || false}
+                                        checked={property.communityFeature.playground || false}
                                         onChange={handleAmenityChange}
                                         name="playground"
                                         disabled={!isEditMode}
@@ -629,7 +645,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.bbqArea || false}
+                                        checked={property.communityFeature.bbqArea || false}
                                         onChange={handleAmenityChange}
                                         name="bbqArea"
                                         disabled={!isEditMode}
@@ -642,7 +658,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.communityGarden || false}
+                                        checked={property.communityFeature.communityGarden || false}
                                         onChange={handleAmenityChange}
                                         name="communityGarden"
                                         disabled={!isEditMode}
@@ -655,7 +671,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.tennisCourt || false}
+                                        checked={property.communityFeature.tennisCourt || false}
                                         onChange={handleAmenityChange}
                                         name="tennisCourt"
                                         disabled={!isEditMode}
@@ -668,7 +684,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.basketballCourt || false}
+                                        checked={property.communityFeature.basketballCourt || false}
                                         onChange={handleAmenityChange}
                                         name="basketballCourt"
                                         disabled={!isEditMode}
@@ -692,7 +708,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.waterIncluded || false}
+                                        checked={property.utilsFeature.waterIncluded || false}
                                         onChange={handleAmenityChange}
                                         name="waterIncluded"
                                         disabled={!isEditMode}
@@ -705,7 +721,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.gasIncluded || false}
+                                        checked={property.utilsFeature.gasIncluded || false}
                                         onChange={handleAmenityChange}
                                         name="gasIncluded"
                                         disabled={!isEditMode}
@@ -718,7 +734,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.electricityIncluded || false}
+                                        checked={property.utilsFeature.electricityIncluded || false}
                                         onChange={handleAmenityChange}
                                         name="electricityIncluded"
                                         disabled={!isEditMode}
@@ -731,7 +747,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.trashIncluded || false}
+                                        checked={property.utilsFeature.trashIncluded || false}
                                         onChange={handleAmenityChange}
                                         name="trashIncluded"
                                         disabled={!isEditMode}
@@ -744,7 +760,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.internetIncluded || false}
+                                        checked={property.utilsFeature.internetIncluded || false}
                                         onChange={handleAmenityChange}
                                         name="internetIncluded"
                                         disabled={!isEditMode}
@@ -768,7 +784,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.solarPanels || false}
+                                        checked={property.energyFeature.solarPanels || false}
                                         onChange={handleAmenityChange}
                                         name="solarPanels"
                                         disabled={!isEditMode}
@@ -781,7 +797,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.energyEfficientAppliances || false}
+                                        checked={property.energyFeature.energyEfficientAppliances || false}
                                         onChange={handleAmenityChange}
                                         name="energyEfficientAppliances"
                                         disabled={!isEditMode}
@@ -794,7 +810,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.greenCertification || false}
+                                        checked={property.energyFeature.greenCertification || false}
                                         onChange={handleAmenityChange}
                                         name="greenCertification"
                                         disabled={!isEditMode}
@@ -807,7 +823,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.evCharging || false}
+                                        checked={property.energyFeature.evCharging || false}
                                         onChange={handleAmenityChange}
                                         name="evCharging"
                                         disabled={!isEditMode}
@@ -820,7 +836,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.rainwaterHarvesting || false}
+                                        checked={property.energyFeature.rainwaterHarvesting || false}
                                         onChange={handleAmenityChange}
                                         name="rainwaterHarvesting"
                                         disabled={!isEditMode}
@@ -833,7 +849,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={property.amenities.programmableThermostat || false}
+                                        checked={property.energyFeature.programmableThermostat || false}
                                         onChange={handleAmenityChange}
                                         name="programmableThermostat"
                                         disabled={!isEditMode}

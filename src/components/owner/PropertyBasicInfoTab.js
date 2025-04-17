@@ -20,6 +20,7 @@ const PropertyBasicInfoForm = ({
     districts,
     propertyTypes
 }) => {
+    console.log(property);
     return (
         <Grid container spacing={3}>
             {/* Title */}
@@ -47,7 +48,7 @@ const PropertyBasicInfoForm = ({
                         disabled={!isEditMode}
                     >
                         <MenuItem value="rent">For Rent</MenuItem>
-                        <MenuItem value="sell">For Sale</MenuItem>
+                        <MenuItem value="sale">For Sale</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>
@@ -80,11 +81,11 @@ const PropertyBasicInfoForm = ({
                         value={property.status}
                         onChange={handleInputChange}
                         label="Status"
-                        disabled={!isEditMode}
+                        disabled={true}
                     >
-                        <MenuItem value="Draft">Draft</MenuItem>
-                        <MenuItem value="Active">Active</MenuItem>
-                        <MenuItem value="Pending Approval">Pending Approval</MenuItem>
+                        <MenuItem value="draft">Draft</MenuItem>
+                        <MenuItem value="active">Active</MenuItem>
+                        <MenuItem value="pending">Pending Approval</MenuItem>
                     </Select>
                 </FormControl>
             </Grid>

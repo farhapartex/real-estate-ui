@@ -60,6 +60,7 @@ ReactDOM.createRoot(root).render(
           <Route path="dashboard" element={<OwnerPropertiesPage />} />
           <Route path="properties" element={<OwnerPropertiesPage />} />
           <Route path="properties/:id" element={<PropertyEditViewPage />} />
+          <Route path="properties/:id/:mode" element={<PropertyEditViewPage />} />
         </Route>
 
 

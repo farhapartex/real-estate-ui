@@ -25,6 +25,7 @@ import {
     NavigateNext as NavigateNextIcon
 } from '@mui/icons-material';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Link as RouterLink } from 'react-router';
 
 // Import mock data (in a real app, this would be fetched from an API)
@@ -490,6 +491,10 @@ const PropertyEditViewPage = () => {
         navigate(`/owner/properties/${id}${isEditMode ? '' : '/edit'}`);
     };
 
+    const handleViewModeToggle = () => {
+        navigate(`/owner/properties/${id}`);
+    }
+
     // Handle property change
     const handlePropertyChange = (e) => {
         const { name, value } = e.target;
@@ -628,7 +633,16 @@ const PropertyEditViewPage = () => {
                                 startIcon={<EditIcon />}
                                 onClick={handleEditModeToggle}
                             >
-                                Edit
+                                Edit Mode
+                            </Button>
+                        )}
+                        {!isNewProperty && isEditMode && (
+                            <Button
+                                variant="contained"
+                                startIcon={<VisibilityIcon />}
+                                onClick={handleViewModeToggle}
+                            >
+                                View Mode
                             </Button>
                         )}
                     </Box>

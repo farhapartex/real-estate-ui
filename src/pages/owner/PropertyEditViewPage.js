@@ -62,7 +62,6 @@ const PropertyEditViewPage = () => {
     const [property, setProperty] = useState(isNewProperty ? {
         title: '',
         description: '',
-        images: [],
         price: '',
         purpose: 'sell',
         location: '',
@@ -75,7 +74,9 @@ const PropertyEditViewPage = () => {
         bathrooms: '',
         size: '',
         yearBuilt: '',
-        status: 'Draft',
+        status: 'Draft'
+    } : mockProperty);
+    const [propertyFeature, setPropertyFeature] = useState({
         features: [],
         amenities: {
             airConditioning: false,
@@ -150,7 +151,7 @@ const PropertyEditViewPage = () => {
             rainwaterHarvesting: false,
             programmableThermostat: false,
         }
-    } : mockProperty);
+    });
 
     // UI state
     const [tabValue, setTabValue] = useState(0);
@@ -481,13 +482,14 @@ const PropertyEditViewPage = () => {
     const handleSave = () => {
         // In a real app, you would save to a database
         if (tabValue === 0) {
+            console.log('Saving property:', property);
             setTabValue(1);
             return;
         } else if (tabValue === 1) {
             setTabValue(2);
             return;
         }
-        console.log('Saving property:', property);
+
         setSnackbar({
             open: true,
             message: isNewProperty ? 'Property created successfully!' : 'Property updated successfully!',
@@ -628,7 +630,7 @@ const PropertyEditViewPage = () => {
 
                     {tabValue === 1 && (
                         <PropertyFeaturesForm
-                            property={property}
+                            propertyFeature={propertyFeature}
                             featureInput={featureInput}
                             setFeatureInput={setFeatureInput}
                             handleAddFeature={handleAddFeature}

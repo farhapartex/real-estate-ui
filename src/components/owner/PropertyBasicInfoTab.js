@@ -94,8 +94,8 @@ const PropertyBasicInfoForm = ({
                 <FormControl fullWidth required>
                     <InputLabel>Property Type</InputLabel>
                     <Select
-                        name="propertyType"
-                        value={property.propertyType}
+                        name="property_type"
+                        value={property.property_type}
                         onChange={handleInputChange}
                         label="Property Type"
                         disabled={!isEditMode}
@@ -157,8 +157,8 @@ const PropertyBasicInfoForm = ({
                 <TextField
                     fullWidth
                     label="Year Built"
-                    name="yearBuilt"
-                    value={property.yearBuilt}
+                    name="built_year"
+                    value={property.built_year}
                     onChange={handleNumberChange}
                     disabled={!isEditMode}
                     type="text"
@@ -171,8 +171,8 @@ const PropertyBasicInfoForm = ({
                 <FormControl fullWidth required>
                     <InputLabel>Country</InputLabel>
                     <Select
-                        name="country"
-                        value={property.country}
+                        name="country_id"
+                        value={property.country_id}
                         onChange={handleInputChange}
                         label="Country"
                         disabled={!isEditMode}
@@ -186,14 +186,14 @@ const PropertyBasicInfoForm = ({
 
             {/* Division */}
             <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth required disabled={!property.country || !isEditMode}>
+                <FormControl fullWidth required disabled={!property.country_id || !isEditMode}>
                     <InputLabel>Division</InputLabel>
                     <Select
-                        name="division"
-                        value={property.division}
+                        name="division_id"
+                        value={property.division_id}
                         onChange={handleInputChange}
                         label="Division"
-                        disabled={!property.country || !isEditMode}
+                        disabled={!property.country_id || !isEditMode}
                     >
                         {divisions.map(division => (
                             <MenuItem key={division.id} value={division.id}>{division?.name}</MenuItem>
@@ -204,14 +204,14 @@ const PropertyBasicInfoForm = ({
 
             {/* District */}
             <Grid item xs={12} sm={6} md={3}>
-                <FormControl fullWidth required disabled={!property.division || !isEditMode}>
+                <FormControl fullWidth required disabled={!property.division_id || !isEditMode}>
                     <InputLabel>District</InputLabel>
                     <Select
-                        name="district"
-                        value={property.district}
+                        name="district_id"
+                        value={property.district_id}
                         onChange={handleInputChange}
                         label="District"
-                        disabled={!property.division || !isEditMode}
+                        disabled={!property.division_id || !isEditMode}
                     >
                         {districts.map(district => (
                             <MenuItem key={district.id} value={district.id}>{district?.name}</MenuItem>

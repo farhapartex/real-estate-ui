@@ -66,14 +66,14 @@ const PropertyEditViewPage = () => {
         purpose: 'sell',
         location: '',
         address: '',
-        country: '',
-        division: '',
-        district: '',
-        propertyType: '',
+        country_id: '',
+        division_id: '',
+        district_id: '',
+        property_type: '',
         bedrooms: '',
         bathrooms: '',
         size: '',
-        yearBuilt: '',
+        built_year: '',
         status: 'Draft'
     } : mockProperty);
     const [propertyFeature, setPropertyFeature] = useState({
@@ -272,7 +272,7 @@ const PropertyEditViewPage = () => {
             setDivisions([]);
             setDistricts([]);
         }
-    }, [property.country]);
+    }, [property.country_id]);
 
     useEffect(() => {
         if (property.division) {
@@ -287,7 +287,7 @@ const PropertyEditViewPage = () => {
         } else {
             setDistricts([]);
         }
-    }, [property.division]);
+    }, [property.division_id]);
 
     // Handle tab change
     const handleTabChange = (event, newValue) => {
@@ -297,11 +297,11 @@ const PropertyEditViewPage = () => {
     // Handle input change
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name == 'division') {
+        if (name == 'division_id') {
             setDivisionId(value);
-        } else if (name == 'district') {
+        } else if (name == 'district_id') {
             setDistrictId(value);
-        } else if (name == 'country') {
+        } else if (name == 'country_id') {
             setCountryId(value);
         }
         setProperty(prev => ({

@@ -17,4 +17,12 @@ export const propertyService = {
             return { success: false, response: null };
         }
     },
+    OwnerPropertyDetails: async (id) => {
+        try {
+            const response = await apiClient.get(`/owner/properties/${id}`);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

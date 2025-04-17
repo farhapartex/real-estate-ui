@@ -60,7 +60,7 @@ const PropertyEditViewPage = () => {
 
     // Initialize property state
     // State for property data
-    const [property, setProperty] = useState(isNewProperty ? {
+    const [property, setProperty] = useState({
         title: '',
         description: '',
         price: 0,
@@ -75,7 +75,7 @@ const PropertyEditViewPage = () => {
         size: 0,
         built_year: '',
         status: 'Draft'
-    } : mockProperty);
+    });
     const [propertyFeature, setPropertyFeature] = useState({
         features: [],
         amenities: {
@@ -171,6 +171,22 @@ const PropertyEditViewPage = () => {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
 
+    const fetchPropertyDetails = async (id) => {
+        try {
+            const result = await propertyService.OwnerPropertyDetails(id);
+            const { success, response } = result;
+            if (success) {
+                setProperty(response);
+                setCountryId(response.country_id);
+                setDivisionId(response.division_id);
+                setDistrictId(response.district_id);
+            }
+        } catch (error) {
+            console.error('Error fetching property details:', error);
+        } finally {
+        }
+    }
+
     const fetchCountries = async () => {
         try {
             const result = await locationService.getPublicCountries(page, pageSize);
@@ -238,6 +254,12 @@ const PropertyEditViewPage = () => {
         } finally {
         }
     }
+
+    useEffect(() => {
+        if (id != 'new') {
+            fetchPropertyDetails(parseInt(id));
+        }
+    }, [id]);
 
     useEffect(() => {
         fetchCountries();

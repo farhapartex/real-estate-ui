@@ -36,6 +36,7 @@ import PropertyBasicInfoForm from '../../components/owner/PropertyBasicInfoTab';
 import PropertyFeaturesForm from '../../components/owner/PropertyFeaturesTab';
 import PropertyPhotosForm from '../../components/owner/PropertyPhotosForm';
 import { locationService } from '../../api/location';
+import { propertyService } from '../../api/property';
 
 // These would typically be imported from separate files
 const PropertyBasicInfoTabUI = ({ property, isEditMode, handleChange }) => (
@@ -62,17 +63,16 @@ const PropertyEditViewPage = () => {
     const [property, setProperty] = useState(isNewProperty ? {
         title: '',
         description: '',
-        price: '',
+        price: 0,
         purpose: 'sell',
-        location: '',
         address: '',
         country_id: '',
         division_id: '',
         district_id: '',
         property_type: '',
-        bedrooms: '',
-        bathrooms: '',
-        size: '',
+        bedrooms: 0,
+        bathrooms: 0,
+        size: 0,
         built_year: '',
         status: 'Draft'
     } : mockProperty);
@@ -294,7 +294,6 @@ const PropertyEditViewPage = () => {
         setTabValue(newValue);
     };
 
-    // Handle input change
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         if (name == 'division_id') {
@@ -317,7 +316,7 @@ const PropertyEditViewPage = () => {
         if (value === '' || /^\d+$/.test(value)) {
             setProperty(prev => ({
                 ...prev,
-                [name]: value
+                [name]: parseInt(value)
             }));
         }
     };
@@ -329,7 +328,7 @@ const PropertyEditViewPage = () => {
         if (value === '' || /^\d+(\.\d{0,2})?$/.test(value)) {
             setProperty(prev => ({
                 ...prev,
-                price: value
+                price: parseFloat(value)
             }));
         }
     };
@@ -478,12 +477,26 @@ const PropertyEditViewPage = () => {
         }));
     };
 
+    const createProperty = async () => {
+        try {
+            const result = await propertyService.createOwnerProperty(property);
+
+            const { success, response } = result;
+
+            if (success) {
+                setTabValue(1);
+            }
+        } catch (error) {
+            console.error('Error fetching countries:', error);
+        } finally {
+        }
+    }
+
     // Handle save
     const handleSave = () => {
         // In a real app, you would save to a database
         if (tabValue === 0) {
-            console.log('Saving property:', property);
-            setTabValue(1);
+            createProperty();
             return;
         } else if (tabValue === 1) {
             setTabValue(2);

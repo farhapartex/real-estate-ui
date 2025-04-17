@@ -9,4 +9,12 @@ export const propertyService = {
             return { success: false, response: null };
         }
     },
+    createOwnerProperty: async (payload) => {
+        try {
+            const response = await apiClient.post(`/owner/properties`, payload);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

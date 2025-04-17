@@ -221,7 +221,7 @@ const PropertyBasicInfoForm = ({
             </Grid>
 
             {/* Location (Area/Neighborhood) */}
-            <Grid item xs={12} sm={6} md={6}>
+            {/* <Grid item xs={12} sm={6} md={6}>
                 <TextField
                     fullWidth
                     label="Location/Area"
@@ -232,7 +232,7 @@ const PropertyBasicInfoForm = ({
                     placeholder="e.g., Downtown, West End, etc."
                     required
                 />
-            </Grid>
+            </Grid> */}
 
             {/* Address */}
             <Grid item xs={12} sm={6} md={6}>

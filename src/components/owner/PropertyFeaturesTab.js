@@ -491,7 +491,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.fireplace || false}
+                                        checked={propertyFeature?.luxuryFeature?.fireplace || false}
                                         onChange={handleAmenityChange}
                                         name="fireplace"
                                         disabled={!isEditMode}
@@ -504,7 +504,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.pool || false}
+                                        checked={propertyFeature.luxuryFeature.pool || false}
                                         onChange={handleAmenityChange}
                                         name="pool"
                                         disabled={!isEditMode}
@@ -517,7 +517,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.gym || false}
+                                        checked={propertyFeature.luxuryFeature.gym || false}
                                         onChange={handleAmenityChange}
                                         name="gym"
                                         disabled={!isEditMode}
@@ -530,7 +530,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.walkInClosets || false}
+                                        checked={propertyFeature.luxuryFeature.walkInClosets || false}
                                         onChange={handleAmenityChange}
                                         name="walkInClosets"
                                         disabled={!isEditMode}
@@ -543,7 +543,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.jacuzzi || false}
+                                        checked={propertyFeature.luxuryFeature.jacuzzi || false}
                                         onChange={handleAmenityChange}
                                         name="jacuzzi"
                                         disabled={!isEditMode}
@@ -556,7 +556,7 @@ const PropertyFeaturesForm = ({
                             <FormControlLabel
                                 control={
                                     <Switch
-                                        checked={propertyFeature.luxaryFeature.sauna || false}
+                                        checked={propertyFeature.luxuryFeature.sauna || false}
                                         onChange={handleAmenityChange}
                                         name="sauna"
                                         disabled={!isEditMode}

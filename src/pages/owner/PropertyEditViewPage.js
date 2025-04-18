@@ -188,6 +188,19 @@ const PropertyEditViewPage = () => {
         }
     }
 
+    const fetchPropertyFeatureDetails = async (id) => {
+        try {
+            const result = await propertyService.OwnerPropertyFeatureDetails(id);
+            const { success, response } = result;
+            if (success) {
+                setPropertyFeature(response);
+            }
+        } catch (error) {
+            console.error('Error fetching property details:', error);
+        } finally {
+        }
+    }
+
     const UpdatePropertyDetails = async (id) => {
         try {
             const result = await propertyService.OwnerPropertyUpdate(id, property);
@@ -275,6 +288,7 @@ const PropertyEditViewPage = () => {
     useEffect(() => {
         if (id != 'new') {
             fetchPropertyDetails(parseInt(id));
+            fetchPropertyFeatureDetails(parseInt(id));
         }
     }, [id]);
 

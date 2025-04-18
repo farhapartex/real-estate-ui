@@ -25,4 +25,12 @@ export const propertyService = {
             return { success: false, response: null };
         }
     },
+    OwnerPropertyUpdate: async (id, payload) => {
+        try {
+            const response = await apiClient.patch(`/owner/properties/${id}`, payload);
+            return { success: true, response: response.data };
+        } catch (error) {
+            return { success: false, response: null };
+        }
+    },
 }

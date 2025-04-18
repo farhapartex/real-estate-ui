@@ -30,7 +30,7 @@ import { Link as RouterLink } from 'react-router';
 
 // Import mock data (in a real app, this would be fetched from an API)
 // You'll need to create a separate file for this data
-import { mockProperty, propertyTypes, countries, divisionsByCountry, districtsByDivision } from '../../propertyMockData';
+import { propertyTypes, divisionsByCountry, districtsByDivision } from '../../propertyMockData';
 import RootLayout from '../../layouts/RootLayout';
 import PropertyBasicInfoTab from '../../components/owner/PropertyBasicInfoTab';
 import PropertyBasicInfoForm from '../../components/owner/PropertyBasicInfoTab';
@@ -175,6 +175,22 @@ const PropertyEditViewPage = () => {
     const fetchPropertyDetails = async (id) => {
         try {
             const result = await propertyService.OwnerPropertyDetails(id);
+            const { success, response } = result;
+            if (success) {
+                setProperty(response);
+                setCountryId(response.country_id);
+                setDivisionId(response.division_id);
+                setDistrictId(response.district_id);
+            }
+        } catch (error) {
+            console.error('Error fetching property details:', error);
+        } finally {
+        }
+    }
+
+    const UpdatePropertyDetails = async (id) => {
+        try {
+            const result = await propertyService.OwnerPropertyUpdate(id, property);
             const { success, response } = result;
             if (success) {
                 setProperty(response);
@@ -523,7 +539,12 @@ const PropertyEditViewPage = () => {
     const handleSave = () => {
         // In a real app, you would save to a database
         if (tabValue === 0) {
-            createProperty();
+            if (isNewProperty) {
+                createProperty();
+            } else {
+                UpdatePropertyDetails(id);
+            }
+
             return;
         } else if (tabValue === 1) {
             setTabValue(2);

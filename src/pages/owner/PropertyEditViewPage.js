@@ -511,7 +511,6 @@ const PropertyEditViewPage = () => {
         navigate(`/owner/properties/${id}`);
     }
 
-    // Handle property change
     const handlePropertyChange = (e) => {
         const { name, value } = e.target;
         setProperty(prev => ({

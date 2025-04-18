@@ -14,7 +14,7 @@ import {
 } from '@mui/icons-material';
 
 const PropertyPhotosForm = ({
-    property,
+    propertyImages,
     handleImageUpload,
     handleRemoveImage,
     isEditMode
@@ -52,8 +52,8 @@ const PropertyPhotosForm = ({
 
             {/* Image Gallery */}
             <Grid container spacing={2}>
-                {property.images.length > 0 ? (
-                    property.images.map((image, index) => (
+                {propertyImages.length > 0 ? (
+                    propertyImages.map((image, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
                             <Card sx={{ position: 'relative' }}>
                                 <CardMedia

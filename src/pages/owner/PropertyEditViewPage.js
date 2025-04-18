@@ -154,6 +154,8 @@ const PropertyEditViewPage = () => {
         }
     });
 
+    const [propertyImages, setPropertyImages] = useState([]);
+
     // UI state
     const [tabValue, setTabValue] = useState(0);
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -729,7 +731,7 @@ const PropertyEditViewPage = () => {
 
                     {tabValue === 2 && (
                         <PropertyPhotosForm
-                            property={property}
+                            propertyImages={propertyImages}
                             handleImageUpload={handleImageUpload}
                             handleRemoveImage={handleRemoveImage}
                         />
